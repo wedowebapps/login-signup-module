@@ -1,0 +1,215 @@
+<?php
+   $productData = $block->getData();
+   $product = $productData['data']['product'];
+   $getPostParams = $productData['data']['getPostParams'];
+   $productId = $product->getID();
+   $getCurrentAttributes = $block->_getCurrentAttributesCall($product,$getPostParams);
+   $getPubCustomizationUrl = $block->getSiteMainUrl().'media/customization/';
+
+    if ($getCurrentAttributes['attributeName'] == 'm_grey_hair') {
+        $block->setOptionLevelToSession('1_1');
+        $block->setDoneOrNotStepToSession('');
+        $block->setSubTitleToSession(__('Do you want to add grey hair to your hair system?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute)) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+ ?>
+            <div class="base-item checkboxWrap" data-level="1" data-optionLevel="1_1" data-currentattr="m_grey_hair" data-currentparent="m_grey_hair_main" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+     <?php }
+   }
+
+   if ($getCurrentAttributes['attributeName'] == 'm_want_grey_hair') {
+        $block->setOptionLevelToSession('2_2');
+        $block->setDoneOrNotStepToSession('half');
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute)) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+ ?>
+            <div class="base-item checkboxWrap" data-level="2" data-optionLevel="2_2" data-currentattr="m_want_grey_hair" data-currentparent="m_grey_hair" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+     <?php }
+   }
+
+    if ($getCurrentAttributes['attributeName'] == 'm_how_much_grey_hair') {
+        $block->setOptionLevelToSession('3_1_2');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('How much grey hair do you need?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute)) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+ ?>
+            <div class="base-item checkboxWrap" data-level="3" data-optionLevel="3_1_2" data-currentattr="m_how_much_grey_hair" data-currentparent="m_want_grey_hair" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+     <?php }
+   }
+
+   if ($getCurrentAttributes['attributeName'] == 'm_grey_hair_type') {
+        $block->setOptionLevelToSession('4_1234_2_2');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('Which type of grey hair do you want?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute)) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+ ?>
+            <div class="base-item checkboxWrap" data-level="4_3" data-optionLevel="4_1234_2_2" data-currentattr="m_grey_hair_type" data-currentparent="<?= $getCurrentAttributes['parentName'] ?>" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+<?php   }
+   }
+
+   if (strcmp(trim($getCurrentAttributes['attributeName']), 'Customize my grey distribution and percentage') == 0) {
+        $block->setOptionLevelToSession('3_3_1');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('Please select your measurement options for us to determine the right way of measurement.'));
+        foreach ($getCurrentAttributes['mulipleOptions']['childOption'] as $attribute) {
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute['optionTitle']);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            
+            if ($attribute['type'] == 'range') {
+                $sliderValue = $attribute['value'];
+                $activeAttrOption = $block->_checkAlreadyInSession('m_how_much_grey_hair_percentage');
+                if (is_array($activeAttrOption) && count($activeAttrOption) > 0) {
+                    foreach ($activeAttrOption as $activeAttrOption) {
+                        if ($activeAttrOption['sliderInnerType'] == $attribute['optionTitle']) {
+                            $sliderValue = $activeAttrOption['sliderValue'];
+                            break;
+                        }
+                    }
+                }
+        ?>
+                <div class="base-range-slider-wrap" data-slider-type="grey_percentage" data-level="3" data-optionLevel="3_3_1" data-currentparent="m_how_much_grey_hair" data-currentattr="m_how_much_grey_hair_percentage" data-price="">
+                    <div class="range-slider-image" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                        <img alt="<?= __(trim($attribute['optionTitle'])) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="range-slider-code swiper-no-swiping">
+                        <div class="slideDetails">
+                            <h2><?= __(trim($attribute['optionTitle'])) ?></h2>
+                            <div class="slide-output-val"></div>
+                        </div>
+                        <div class="range-slider-wrap">
+                            <div class="range-slider-min"><?= $attribute['min']?></div>
+                            <div class="range-slider-minus">-</div>
+                            <div class="range-slider">
+                                <input
+                                    type="range"
+                                    min="<?= $attribute['min'] ?>"
+                                    max="<?= $attribute['max'] ?>"
+                                    step="<?= $attribute['step'] ?>"
+                                    value="<?= $sliderValue ?>"
+                                    data-orientation="horizontal"
+                                    data-unit="modulo"
+                                    data-slider-type="Grey Percentage"
+                                    data-range-slider-type="<?= $attribute['optionTitle']?>"
+                                    class="rangeInput"
+                                />
+                            </div>
+                            <div class="range-slider-plus">+</div>
+                            <div class="range-slider-max"><?= $attribute['max']?></div>
+                        </div>
+                    </div>
+                </div>
+                
+            <?php }
+        }
+    }

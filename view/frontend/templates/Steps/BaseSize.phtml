@@ -1,0 +1,225 @@
+<?php
+   $productData = $block->getData();
+   $product = $productData['data']['product'];
+   $getPostParams = $productData['data']['getPostParams'];
+   $productId = $product->getID();
+   $getCurrentAttributes = $block->_getCurrentAttributesCall($product, $getPostParams);
+   $getPubCustomizationUrl = $block->getSiteMainUrl().'media/customization/';
+
+    if ($getCurrentAttributes['attributeName'] == 'm_template_samples') {
+        $block->setOptionLevelToSession('1_1');
+        $block->setDoneOrNotStepToSession('');
+        $block->setSubTitleToSession(__('How do you want us to determine the base size of your hair system?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute)) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+        ?>
+            <div class="base-item checkboxWrap" data-level="1" data-optionLevel="1_1" data-currentattr="m_template_samples" data-currentparent="base_size_main" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details">
+                        <p class="attrOptionTitle"><span><?= __(trim($attribute)) ?></span></p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+        <?php }
+    }
+
+    if ($getCurrentAttributes['attributeName'] == 'm_base_size') {
+        $block->setOptionLevelToSession('123_2');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('Which of the following accurately describes your hair loss size?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), str_replace('&comma;', ',', trim($attribute))) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+    ?>
+            <div class="base-item checkboxWrap" data-level="2" data-optionLevel="123_2" data-currentattr="m_base_size" data-currentparent="m_template_samples" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= htmlentities( __(trim($attribute)) ) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= str_replace(',','',$getPriceRule) ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(str_replace('&comma;', ',', trim($attribute))) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+        <?php }
+    }
+
+    if ($getCurrentAttributes['attributeName'] == 'm_base_size_section') {
+        $block->setOptionLevelToSession('4_2');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('Please select your hair loss type from the following 2 options for us to determine the right way of measurement.'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), str_replace('&comma;', ',', trim($attribute))) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+    ?>
+        <div class="base-item checkboxWrap <?= __(trim($attribute)) ?>-hide " data-level="2" data-optionLevel="4_2" data-currentattr="m_base_size_section" data-currentparent="m_template_samples" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+            <div class="base-item-inner checkbox <?= $activeClass ?>">
+                <div class="base-img">
+                    <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                </div>
+                <div class="base-details" data-price="<?= str_replace(',','',$getPriceRule) ?>">
+                    <p class="attrOptionTitle">
+                        <span><?= __(trim($attribute)) ?></span>
+                        <?php 
+                            if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                            }
+                        ?>
+                    </p>
+                </div>
+                <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+            </div>
+        </div>
+        <?php }
+    }
+
+    if (strcmp(trim($getCurrentAttributes['attributeName']), 'Topper') == 0) {
+        $block->setOptionLevelToSession('4_3');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('Please select your measurement options for us to determine the right way of measurement.'));
+        foreach ($getCurrentAttributes['mulipleOptions']['childOption'] as $attribute) {
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute['optionTitle']);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRuleTopper = $block->getPriceRuleTopper($product);
+            if ($attribute['type'] == 'range') {
+                $sliderValue = $attribute['value'];
+                $activeAttrOption = $block->_checkAlreadyInSession('m_base_size_selection_topper');
+                if (is_array($activeAttrOption) && count($activeAttrOption) > 0) {
+                    foreach ($activeAttrOption as $activeAttrOption) {
+                        if ($activeAttrOption['sliderInnerType'] == $attribute['optionTitle']) {
+                            $sliderValue = $activeAttrOption['sliderValue'];
+                            break;
+                        }
+                    }
+                }
+            ?>
+                <div class="base-range-slider-wrap" data-slider-type="topper" data-level="3" data-optionLevel="4_3" data-optionLevel="4_3" data-currentparent="m_base_size_section" data-currentattr="m_base_size_selection_topper" data-price="<?= $getPriceRuleTopper ?>">
+                    <div class="range-slider-image" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                        <img alt="<?= __(trim($attribute['optionTitle'])) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="range-slider-code swiper-no-swiping">
+                        <div class="slideDetails">
+                            <h2><?= __(trim($attribute['optionTitle'])) ?></h2>
+                            <div class="slide-output-val"></div>
+                        </div>
+                        <div class="range-slider-wrap">
+                            <div class="range-slider-min"><?= $attribute['min']?></div>
+                            <div class="range-slider-minus">-</div>
+                            <div class="range-slider">
+                                <input
+                                    type="range"
+                                    min="<?= $attribute['min'] ?>"
+                                    max="<?= $attribute['max'] ?>"
+                                    step="<?= $attribute['step'] ?>"
+                                    value="<?= $sliderValue ?>"
+                                    data-orientation="horizontal"
+                                    data-unit="inch"
+                                    data-slider-type="Topper"
+                                    data-range-slider-type="<?= $attribute['optionTitle'] ?>"
+                                    class="rangeInput"
+                                />
+                            </div>
+                            <div class="range-slider-plus">+</div>
+                            <div class="range-slider-max"><?= $attribute['max'] ?></div>
+                        </div>
+                    </div>
+                </div>
+                
+            <?php }
+        }
+    }
+
+    if (strcmp(trim($getCurrentAttributes['attributeName']), 'Full Cap') == 0) {
+        $block->setOptionLevelToSession('4_3');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('Please select your measurement options for us to determine the right way of measurement.'));
+        foreach ($getCurrentAttributes['mulipleOptions']['childOption'] as $attribute) {
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute['optionTitle']);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            
+            if ($attribute['type'] == 'range') {
+                $sliderValue = $attribute['value'];
+                $activeAttrOption = $block->_checkAlreadyInSession('m_base_size_section_full_cap');
+                if (is_array($activeAttrOption) && count($activeAttrOption) > 0) {
+                    foreach ($activeAttrOption as $activeAttrOption) {
+                        if ($activeAttrOption['sliderInnerType'] == $attribute['optionTitle']) {
+                            $sliderValue = $activeAttrOption['sliderValue'];
+                            break;
+                        }
+                    }
+                }
+        ?>
+                <div class="base-range-slider-wrap" data-slider-type="full_cap" data-level="3" data-optionLevel="4_3" data-currentparent="m_base_size_section" data-currentattr="m_base_size_section_full_cap" data-price="">
+                    <div class="range-slider-image" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                        <img alt="<?= __(trim($attribute['optionTitle'])) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="range-slider-code swiper-no-swiping">
+                        <div class="slideDetails">
+                            <h2><?= __(trim($attribute['optionTitle'])) ?></h2>
+                            <div class="slide-output-val"></div>
+                        </div>
+                        <div class="range-slider-wrap">
+                            <div class="range-slider-min"><?= $attribute['min']?></div>
+                            <div class="range-slider-minus">-</div>
+                            <div class="range-slider">
+                                <input
+                                    type="range"
+                                    min="<?= $attribute['min'] ?>"
+                                    max="<?= $attribute['max'] ?>"
+                                    step="<?= $attribute['step'] ?>"
+                                    value="<?= $sliderValue ?>"
+                                    data-orientation="horizontal"
+                                    data-unit="inch"
+                                    data-slider-type="Full Cap"
+                                    data-range-slider-type="<?= $attribute['optionTitle']?>"
+                                    class="rangeInput"
+                                />
+                            </div>
+                            <div class="range-slider-plus">+</div>
+                            <div class="range-slider-max"><?= $attribute['max']?></div>
+                        </div>
+                    </div>
+                </div>
+                
+            <?php }
+        }
+    }

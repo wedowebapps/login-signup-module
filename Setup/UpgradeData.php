@@ -1,60 +1,124 @@
 <?php
-namespace Lordhair\LoginSignup\Setup;
+namespace Lordhair\Customizations\Setup;
 
-use Magento\Customer\Api\CustomerMetadataInterface;
+use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+
 use Magento\Framework\Setup\UpgradeDataInterface;
 
 class UpgradeData implements UpgradeDataInterface
 {
-    const COUNTRY_ISO_CODE = 'loginsignup_countryisocode';
-
+    /**
+     * EAV setup factory
+     *
+     * @var EavSetupFactory
+     */
     private $eavSetupFactory;
 
-    private $eavConfig;
-
-    public function __construct(EavSetupFactory $eavSetupFactory,\Magento\Eav\Model\Config $eavConfig)
+    /**
+     * Init
+     *
+     * @param EavSetupFactory $eavSetupFactory
+     */
+    public function __construct(EavSetupFactory $eavSetupFactory)
     {
         $this->eavSetupFactory = $eavSetupFactory;
-        $this->eavConfig = $eavConfig;
     }
 
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context) {
         
         if(version_compare($context->getVersion(), '1.0.1', '<')) {
-
             $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
-            $setup->startSetup();
 
-            $attributeCode = self::COUNTRY_ISO_CODE;
-            $eavSetup->addAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $attributeCode, [
-                'type'     => 'varchar',
-                'label'     => 'Counrty ISO Code',
-                'visible'   => true,
-                'required'  => false,
-                'user_defined' => 1,
-                'system'    => 0,
-                'position'  => 102,
-                'unique'    => false,
-                'input'     => 'text'
-            ]);
-    
-            $eavSetup->addAttributeToSet(
-                CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER,
-                CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER,
-                null,
-                $attributeCode);
-    
-            $countryCode = $this->eavConfig->getAttribute(CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $attributeCode);
-            $countryCode->setData('used_in_forms', [
-                'adminhtml_customer',
-                'customer_account_create',
-                'customer_account_edit'
-            ]);
-            $countryCode->getResource()->save($countryCode);
+            //Create m_hair_cut_styled_have Attribute
+            $eavSetup->addAttribute(
+                \Magento\Catalog\Model\Product::ENTITY,
+                'm_hair_cut_styled_have',
+                [
+                    'group' => 'Options Config',
+                    'attribute_set' => 'Default Migrated',
+                    'type' => 'text',
+                    'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend',
+                    'frontend' => '',
+                    'label' => 'Yes, have hair cut-in and styled',
+                    'input' => 'multiselect',
+                    'class' => '',
+                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+                    'visible' => true,
+                    'required' => false,
+                    'user_defined' => true,
+                    'default' => '',
+                    'searchable' => false,
+                    'filterable' => false,
+                    'comparable' => true,
+                    'is_used_in_grid' => true,
+                    'visible_on_front' => true,
+                    'used_in_product_listing' => true,
+                    'unique' => false
+                ]
+            );
+
+            $attributeId = $eavSetup->getAttributeId('catalog_product', 'm_hair_cut_styled_have');
+
+            $options = [
+                'values' => [
+                '1' => 'Choose your hairstyles',
+                '2' => 'I want to order my length',
+                '3' => 'I\'ll send email to Lordhair',
+                '4' => 'Upload hairstyle images you want',
+            ],
+            'attribute_id' => $attributeId,
+            ];
+
+            $eavSetup->addAttributeOption($options);
+        }
+
+        if(version_compare($context->getVersion(), '1.0.2', '<')) {
+            $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+
+            //Create m_base_production_time Attribute
+            $eavSetup->addAttribute(
+                \Magento\Catalog\Model\Product::ENTITY,
+                'm_base_production_time',
+                [
+                    'group' => 'Options Config',
+                    'attribute_set' => 'Default Migrated',
+                    'type' => 'text',
+                    'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend',
+                    'frontend' => '',
+                    'label' => 'Base Production Time',
+                    'input' => 'multiselect',
+                    'class' => '',
+                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+                    'visible' => true,
+                    'required' => false,
+                    'user_defined' => true,
+                    'default' => '',
+                    'searchable' => false,
+                    'filterable' => false,
+                    'comparable' => true,
+                    'is_used_in_grid' => true,
+                    'visible_on_front' => true,
+                    'used_in_product_listing' => true,
+                    'unique' => false
+                ]
+            );
+
+            $attributeId = $eavSetup->getAttributeId('catalog_product', 'm_base_production_time');
+
+            $options = [
+                'values' => [
+                '1' => 'Regular service 9-10 weeks',
+                '2' => 'Rush service 7-8 weeks'
+            ],
+            'attribute_id' => $attributeId,
+            ];
+
+            $eavSetup->addAttributeOption($options);
         }
 	}
 }

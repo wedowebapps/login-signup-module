@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column-full-width" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <meta name='viewport' content='initial-scale=1, viewport-fit=cover'/>
+        <css src="Lordhair_Customizations::css/customizeswipe.css" />
+        <css src="Lordhair_Csr::css/fineUploader.css" />
+    </head>
+    <body>
+        <referenceBlock name="base-header-container" remove="true" />
+        <referenceBlock name="base-footer-container" remove="true" />
+        <referenceBlock name="page.main.title" remove="true" />
+        <referenceContainer name="content">
+            <block class="Lordhair\Customizations\Block\Customizations" name="product.customization.new" template="Lordhair_Customizations::customizations.phtml" cacheable="false" />
+        </referenceContainer>
+    </body>
+</page>

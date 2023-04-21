@@ -1,0 +1,315 @@
+<?php
+    $productData = $block->getData();
+    $product = $productData['data']['product'];
+    $getPostParams = $productData['data']['getPostParams'];
+    $productId = $product->getID();
+    $getCurrentAttributes = $block->_getCurrentAttributesCall($product,$getPostParams);
+    $getPubCustomizationUrl = $block->getSiteMainUrl().'media/customization/';
+    $getPubColrUrl = $block->getSiteMainUrl().'media/customization/colors/';
+
+    if ($getCurrentAttributes['attributeName'] == 'm_highlight') {
+        $block->setOptionLevelToSession('1_1');
+        $block->setDoneOrNotStepToSession('');
+        $block->setSubTitleToSession(__('Do you want to add highlights to your hair system?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute)) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+    ?>
+            <div class="base-item checkboxWrap" data-level="1" data-optionLevel="1_1" data-currentattr="m_highlight" data-currentparent="m_highlight_main" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+        <?php }
+    }
+
+    if ($getCurrentAttributes['attributeName'] == 'm_highlights_type_new') {
+        $block->setOptionLevelToSession('2_1');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('How do you want to customize the highlight color of your hair system?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute)) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+    ?>
+            <div class="base-item checkboxWrap" data-level="2" data-optionLevel="2_2" data-currentattr="m_highlights_type_new" data-currentparent="m_highlight" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+        <?php }
+    }
+
+    if (strcmp(trim($getCurrentAttributes['attributeName']), 'Evenly Blended') == 0 || strcmp(trim($getCurrentAttributes['attributeName']), 'Spot/Dot') == 0 || strcmp(trim($getCurrentAttributes['attributeName']), 'Root color') == 0) {
+            $block->setOptionLevelToSession('3_2');
+            $block->setDoneOrNotStepToSession('half');
+            $block->setSubTitleToSession(__('Please select color code from following options'));
+            foreach ($getCurrentAttributes['mulipleOptions']['childOption'] as $attribute) {
+                if ($attribute['optionTitle'] != '') {
+                    $activeClass = '';
+                    $activeAttrOption = $block->_checkAlreadyInSession($attribute['attrName']);
+                    if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute['optionTitle'])) == 0) {
+                        $activeClass = 'active current';
+                    }
+                    $getImagesByAttrName = $block->getImagesByAttrName($attribute['optionTitle']);
+                    $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+                    $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+                    $getPriceRule = $block->getPriceRule($product,$attribute['optionTitle']);
+                    $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+                    $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+        ?>
+                    <div class="base-item checkboxWrap" data-level="2" data-optionLevel="3_2" data-currentattr="<?= $attribute['attrName'] ?>" data-currentparent="m_highlights_type_new" data-src="<?= $getPubColrUrl.$mainImage ?>">
+                        <div class="base-item-inner checkbox <?= $activeClass ?>">
+                            <div class="base-img">
+                                <img alt="<?= __(trim($attribute['optionTitle'])) ?>" src="<?= $getPubColrUrl.$thumbImage ?>">
+                            </div>
+                            <div class="base-details" data-price="<?= $getPriceRule ?>">
+                                <p class="attrOptionTitle">
+                                    <span><?= __(trim($attribute['optionTitle'])) ?></span>
+                                    <?php 
+                                        if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                            echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                        }
+                                    ?>
+                                </p>
+                            </div>
+                            <textarea class="attrOptionTitleValue"><?= $attribute['optionTitle'] ?></textarea>
+                        </div>
+                    </div>
+        <?php
+                }
+            }
+    }
+
+    if (strcmp(trim($getCurrentAttributes['attributeName']), 'Please refer to my specific instructions') == 0) {
+        $block->setOptionLevelToSession('6_1');
+        $block->setDoneOrNotStepToSession('half');
+        $activeAttrOption = $block->_checkAlreadyInSession('m_highlights_type_new_special');
+        $block->setSubTitleToSession(__('Please describe additional instruction for highlight'));
+    ?>
+        <div class="base-item textbox" data-level="3" data-optionLevel="6_1" data-currentattr="m_highlights_type_new_special" data-currentparent="m_highlights_type_new" data-src="" style="width:100%">
+            <textarea class="unrequired hair_highlights_additional" name="hair_highlights_additional" rows="3" cols="80" placeholder="<?= __('Please type in your additional instruction.') ?>"><?= $activeAttrOption ?></textarea>
+        </div>
+    <?php
+    }
+
+    if (strcmp(trim($getCurrentAttributes['parentName']), 'm_color_code') == 0 || strcmp(trim($getCurrentAttributes['parentName']), 'm_color_code_for_women') == 0) {
+
+        $checkSpotDotOrEvenly = $block->_checkAlreadyInSession('m_highlights_type_new');
+        $block->setSubTitleToSession(__('The scale represents the percentage of hair that will be highlighted in the color you just selected in an even and smooth blend across the entire area selected. Note that 100% means that all your hair is in the highlight color. 30% means that 30% of the hairs will be highlighted, and the remaining 70% will be in the color chosen in the "hair color" step.'));
+
+        if (strcmp(trim($checkSpotDotOrEvenly), trim('Spot/Dot')) == 0){
+            $block->setOptionLevelToSession('3_45_1');
+            $block->setDoneOrNotStepToSession('half');
+
+            $block->setSubTitleToSession(__('The scale represents the percentage of hair that will be highlighted in the color you just selected in concentrated streaks of hair to create a spot dye effect. Note that 100% means that all your hair is in the highlight color. 30% means that 30% of the hairs will be highlighted, and the remaining 70% will be in the color chosen in the "hair color" step.'));
+            foreach ($getCurrentAttributes['mulipleOptions']['childOption'] as $attribute) {
+                $optionPriceArray = '';
+                $getImagesByAttrName = $block->getImagesByAttrName($attribute['optionTitle']);
+                $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+                $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+                
+                if ($attribute['type'] == 'range') {
+                    $sliderValue = $attribute['value'];
+                    $activeAttrOption = $block->_checkAlreadyInSession('m_highlight_percentage');
+                    if (is_array($activeAttrOption) && count($activeAttrOption) > 0) {
+                        foreach ($activeAttrOption as $activeAttrOption) {
+                            if ($activeAttrOption['sliderInnerType'] == $attribute['optionTitle']) {
+                                $sliderValue = $activeAttrOption['sliderValue'];
+                                break;
+                            }
+                        }
+                    }
+            ?>
+                    <div class="base-range-slider-wrap" data-slider-type="Highlight Percentage" data-price="<?= $optionPriceArray ?>" data-level="4" data-optionLevel="3_45_1" data-currentparent="<?= $getCurrentAttributes['parentName'] ?>" data-currentattr="m_highlight_percentage" data-price="">
+                        <div class="range-slider-image" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                            <img alt="<?= __(trim($attribute['displayTitle'])) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                        </div>
+                        <div class="range-slider-code swiper-no-swiping">
+                            <div class="slideDetails">
+                                <h2><?= __(trim($attribute['displayTitle'])) ?></h2>
+                                <div class="slide-output-val"></div>
+                            </div>
+                            <div class="range-slider-wrap">
+                                <div class="range-slider-min"><?= $attribute['min']?></div>
+                                <div class="range-slider-minus">-</div>
+                                <div class="range-slider">
+                                    <input
+                                        type="range"
+                                        min="<?= $attribute['min'] ?>"
+                                        max="<?= $attribute['max'] ?>"
+                                        step="<?= $attribute['step'] ?>"
+                                        value="<?= $sliderValue ?>"
+                                        data-orientation="horizontal"
+                                        data-unit="modulo"
+                                        data-slider-type="Spot/Dot"
+                                        data-range-slider-type="<?= $attribute['optionTitle']?>"
+                                        class="rangeInput"
+                                    />
+                                </div>
+                                <div class="range-slider-plus">+</div>
+                                <div class="range-slider-max"><?= $attribute['max']?></div>
+                            </div>
+                        </div>
+                    </div>
+                <?php }
+            }
+        } elseif(strcmp(trim($checkSpotDotOrEvenly), trim('Root color')) == 0) {
+
+            $block->setSubTitleToSession(__('Be careful: when choosing the root dye, the color chosen is applied at the root and changes the root color. The length chosen indicates the length, starting from the root going outwards to the end of the hair. <br>Ex. If you choose 1 inch, the top 1 inch of the hairpiece will be dyed at the root. The remainder of the hair outwards to the ends will be in the color chosen at the ""hair color"" step. <br>If you choose a root color length that exceeds your hair length, the entire hairpiece will be in the root color chosen only.'));
+            $optionPriceArray = '';
+            $getImagesByAttrName = $block->getImagesByAttrName('Length');
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $min = 4;
+            $max = 24;
+
+            $hairLengthArr = explode(",",$product->getResource()->getAttribute('root_color_hair_length')->getFrontend()->getValue($product));
+
+            $prices = $block->_getPricesArray($product);
+
+            foreach ($hairLengthArr as $attribute) {
+                if(array_key_exists(trim($attribute),$prices)) {
+                    preg_match_all('!\d+!', $attribute, $matches);
+                    $optionPriceArray.=$matches[0][0]."=>".$this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($prices[trim($attribute)]).",";
+                }
+            }
+
+            if (count($hairLengthArr) > 1) {
+                $newOptionArr = $hairLengthArr;
+                $minArr = reset($newOptionArr);
+                $maxArr = end($newOptionArr);
+                preg_match_all('!\d+!', $minArr, $matches);
+                $min = $matches[0][0];
+                preg_match_all('!\d+!', $maxArr, $matches);
+                $max = $matches[0][0];
+            }
+
+            $optionPriceArray = substr($optionPriceArray,0,strlen($optionPriceArray)-1);
+            $sliderValue = 0;
+            $activeAttrOption = $block->_checkAlreadyInSessionSlide('m_hair_length','Length');
+            if (is_array($activeAttrOption) && count($activeAttrOption) > 0) {
+                $sliderValue = $activeAttrOption[0]['sliderValue'];
+            }elseif($activeAttrOption){
+                $sliderValue = $activeAttrOption;
+            }
+            
+            ?>
+            <div class="base-range-slider-wrap" data-field-name="m_hair_length_root" data-slider-type="hair_length_root" data-price="<?= $optionPriceArray ?>" data-level="4" data-optionLevel="3_45_1" data-currentparent="<?= $getCurrentAttributes['parentName'] ?>" data-currentattr="m_hair_length_root">
+                <div class="range-slider-code swiper-no-swiping">
+                    <div class="slideDetails">
+                        <h2><?= __('Root color length') ?></h2>
+                        <div class="slide-output-val"></div>
+                    </div>
+                    <div class="range-slider-wrap">
+                        <div class="range-slider-min"><?= $min ?></div>
+                        <div class="range-slider-minus">-</div>
+                        <div class="range-slider">
+                            <input
+                                type="range"
+                                min="<?= $min ?>"
+                                max="<?= $max ?>"
+                                step="2"
+                                value="<?= $sliderValue ?>"
+                                data-orientation="horizontal"
+                                data-unit="inch"
+                                data-slider-type="Hair Length"
+                                data-range-slider-type="Hair length"
+                                class="rangeInput"
+                            />
+                        </div>
+                        <div class="range-slider-plus">+</div>
+                        <div class="range-slider-max"><?= $max ?></div>
+                    </div>
+                </div>
+            </div>
+        <?php
+        } else {
+            $optionPriceArray = '';
+            $getImagesByAttrName = $block->getImagesByAttrName('Highlight Percentage');
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $block->setOptionLevelToSession('3_45_1');
+            $block->setDoneOrNotStepToSession('half');
+            $sliderValue = 0;
+            $activeAttrOption = $block->_checkAlreadyInSession('m_highlight_percentage');
+            if (is_array($activeAttrOption) && count($activeAttrOption) > 0) {
+                $sliderValue = $activeAttrOption[0]['sliderValue'];
+            }
+        ?>
+            <div class="base-range-slider-wrap"  data-field-name="m_highlight_percentage" data-slider-type="Highlight Percentage" data-price="<?= $optionPriceArray ?>" data-level="3" data-optionLevel="3_45_1" data-currentparent="<?= $getCurrentAttributes['parentName'] ?>" data-currentattr="m_highlight_percentage">
+                <div class="range-slider-image" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                    <img alt="<?= __('Highlight Percentage') ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                </div>
+                <div class="range-slider-code swiper-no-swiping">
+                    <div class="slideDetails">
+                        <div class="slide-output-val"></div>
+                    </div>
+                    <div class="range-slider-wrap">
+                        <div class="range-slider-min">0</div>
+                        <div class="range-slider-minus">-</div>
+                        <div class="range-slider">
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                step="5"
+                                value="<?= $sliderValue ?>"
+                                data-orientation="horizontal"
+                                data-unit="modulo"
+                                data-slider-type="Highlight Percentage"
+                                data-range-slider-type="Highlight Percentage"
+                                class="rangeInput"
+                            />
+                        </div>
+                        <div class="range-slider-plus">+</div>
+                        <div class="range-slider-max">100</div>
+                    </div>
+                </div>
+            </div>
+    <?php
+        }
+    }

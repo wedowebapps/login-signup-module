@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Customer\Model\ResourceModel\Customer">
-        <plugin name="lordhair_validate_unique_telephone" type="Lordhair\LoginSignup\Plugin\Model\ResourceModel\Customer\ValidateUniqueTelephone" sortOrder="10" disabled="false"  />
-    </type>
-    <preference for="Lordhair\LoginSignup\Model\MailInterface" type="Lordhair\LoginSignup\Model\Mail" />
-    <preference for="Magento\Customer\Block\Form\Edit" type="Lordhair\LoginSignup\Block\Form\Edit" />
+    <preference for="Magento\Catalog\Block\Product\View\Options" type="Lordhair\Customizations\Block\Product\View\Options" />
+    <preference for="Lordhair\Customizations\Model\Mail\MailInterface" type="Lordhair\Customizations\Model\Mail\Mail" />
+    <preference for="Magento\Checkout\Model\Cart" type="Lordhair\Customizations\Model\Cart" />
 </config>

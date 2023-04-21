@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-   <event name="customer_account_edited">
-       <observer name="lordhair_loginsignup_customer_save_after" instance="Lordhair\LoginSignup\Observer\LordhairUpdateCustomerObserver" />
-   </event>
-   <event name="customer_login">
-        <observer name="lordhair_loginsignup_customer_login" instance="Lordhair\LoginSignup\Observer\GuestQuoteUpdate" />
-   </event>
+    <event name="sales_order_place_after">
+        <observer name="lordhair_sales_order_place_after" instance="Lordhair\Customizations\Observer\OrderPlaceAfter" />
+    </event>
 </config>

@@ -1,0 +1,278 @@
+<?php
+    $productData = $block->getData();
+    $product = $productData['data']['product'];
+    $getPostParams = $productData['data']['getPostParams'];
+    $productId = $product->getID();
+    $getCurrentAttributes = $block->_getCurrentAttributesCall($product,$getPostParams);
+    $getPubCustomizationUrl = $block->getSiteMainUrl().'media/customization/';
+
+    if ($getCurrentAttributes['attributeName'] == 'm_cut_in_and_style') {
+        $block->setOptionLevelToSession('1_1');
+        $block->setDoneOrNotStepToSession('');
+        $block->setSubTitleToSession(__('Do you want to opt for our hair cutting & styling service?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName'],$attribute);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), str_replace('&comma;', ',', trim($attribute))) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+    ?>
+            <div class="base-item checkboxWrap" data-level="1" data-optionLevel="1_1" data-currentattr="m_cut_in_and_style" data-currentparent="m_cut_in_and_style_main" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+    <?php }
+    }
+
+    if ($getCurrentAttributes['attributeName'] == 'm_hair_cut_styled_have') {
+        $block->setOptionLevelToSession('2_2');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession(__('How do you want us to determine the hairstyle for your hair system?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName'],$attribute);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), str_replace('&comma;', ',', trim($attribute))) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+    ?>
+            <div class="base-item checkboxWrap" data-level="2" data-optionLevel="2_2" data-currentattr="m_hair_cut_styled_have" data-currentparent="m_cut_in_and_style" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+    <?php }
+    }
+
+    if ($getCurrentAttributes['attributeName'] == 'm_cut_style') {
+        $block->setOptionLevelToSession('3_1_2');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession('Please select a hairstyle from the following options.(Hairstyle)');
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName'],$attribute);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), str_replace('&comma;', ',', trim($attribute))) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+    ?>
+            <div class="base-item checkboxWrap" data-level="3" data-optionLevel="3_1_2" data-currentattr="m_cut_style" data-currentparent="m_hair_cut_styled_have" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+    <?php }
+    }
+
+    if (strcmp(trim($getCurrentAttributes['attributeName']), 'Upload hairstyle images you want') == 0) {
+        $block->setOptionLevelToSession('4_4_2');
+        $block->setDoneOrNotStepToSession('half');
+        $activeAttrOption = $block->_checkAlreadyInSession('m_cut_style_upload','');
+        $block->setSubTitleToSession('You can upload hairstyle images from following options');
+  ?>
+        <div class="base-item textbox filesupload" data-level="4" data-optionLevel="4_4_2" data-currentattr="m_cut_style_upload" data-currentparent="m_hair_cut_styled_have" data-src="" style="width:100%">
+            <div class="input-box filesuploadWrap">
+                <script type="text/x-magento-template" id="qq-template">
+                    <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">
+                        <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+                            <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+                        </div>
+                        <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+                            <span class="qq-upload-drop-area-text-selector"></span>
+                        </div>
+                        <div class="qq-upload-button-selector qq-upload-button">
+                            <div>Upload a file</div>
+                        </div>
+                        <div class="clear"></div>
+                        <span class="qq-drop-processing-selector qq-drop-processing">
+                            <span>Processing dropped files...</span>
+                            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+                        </span>
+                        <ul class="qq-upload-list-selector qq-upload-list" role="region" aria-live="polite" aria-relevant="additions removals">
+                            <li>
+                                <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                                <div class="qq-progress-bar-container-selector qq-progress-bar-container">
+                                    <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                                </div>
+                                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                                <div class="qq-thumbnail-wrapper">
+                                    <img class="qq-thumbnail-selector" qq-max-size="120" qq-server-scale>
+                                </div>
+                                <button type="button" class="qq-upload-cancel-selector qq-upload-cancel">X</button>
+                                <button type="button" class="qq-upload-retry-selector qq-upload-retry">
+                                    <span class="qq-btn qq-retry-icon" aria-label="Retry"></span>
+                                    Retry
+                                </button>
+
+                                <div class="qq-file-info">
+                                    <div class="qq-file-name">
+                                        <span class="qq-upload-file-selector qq-upload-file"></span>
+                                        <span class="qq-edit-filename-icon-selector qq-btn qq-edit-filename-icon" aria-label="Edit filename"></span>
+                                    </div>
+                                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                                    <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">
+                                        <span class="qq-btn qq-delete-icon" aria-label="Delete"></span>
+                                    </button>
+                                    <button type="button" class="qq-btn qq-upload-pause-selector qq-upload-pause">
+                                        <span class="qq-btn qq-pause-icon" aria-label="Pause"></span>
+                                    </button>
+                                    <button type="button" class="qq-btn qq-upload-continue-selector qq-upload-continue">
+                                        <span class="qq-btn qq-continue-icon" aria-label="Continue"></span>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <dialog class="qq-alert-dialog-selector">
+                            <div class="qq-dialog-message-selector"></div>
+                            <div class="qq-dialog-buttons">
+                                <button type="button" class="qq-cancel-button-selector">Close</button>
+                            </div>
+                        </dialog>
+
+                        <dialog class="qq-confirm-dialog-selector">
+                            <div class="qq-dialog-message-selector"></div>
+                            <div class="qq-dialog-buttons">
+                                <button type="button" class="qq-cancel-button-selector">No</button>
+                                <button type="button" class="qq-ok-button-selector">Yes</button>
+                            </div>
+                        </dialog>
+
+                        <dialog class="qq-prompt-dialog-selector">
+                            <div class="qq-dialog-message-selector"></div>
+                            <input type="text">
+                            <div class="qq-dialog-buttons">
+                                <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                                <button type="button" class="qq-ok-button-selector">Ok</button>
+                            </div>
+                        </dialog>
+                    </div>
+                </script>
+                <div id="uploader"></div>
+            </div>
+            <textarea class="unrequired hair_highlights_additional" name="hair_highlights_additional" rows="3" cols="80" placeholder="<?= __('Please type in your additional instruction.') ?>"><?= $activeAttrOption ?></textarea>
+        </div>
+        <style>
+            .filesuploadWrap .qq-gallery.qq-uploader{
+                background: url('<?= $getPubCustomizationUrl; ?>/ic_upload_file.png') no-repeat;
+                background-position-y: 15%;
+                background-position-x: center;
+            }
+        </style>
+  <?php
+    }
+    if (strcmp(trim($getCurrentAttributes['attributeName']), 'I want to order my length') == 0) {
+        $block->setOptionLevelToSession('4_2_2');
+        $block->setDoneOrNotStepToSession('half');
+        $block->setSubTitleToSession('Please customize your hair length for each area.');
+        foreach ($getCurrentAttributes['mulipleOptions']['childOption'] as $attribute) {
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute['optionTitle']);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            
+            if ($attribute['type'] == 'range') {
+                $sliderValue = $attribute['value'];
+                $activeAttrOption = $block->_checkAlreadyInSessionSlide('m_hair_cut_styled_have_length',$attribute['optionTitle']);
+                if (is_array($activeAttrOption) && count($activeAttrOption) > 0) {
+                    foreach ($activeAttrOption as $activeAttrOption) {
+                        if ($activeAttrOption['sliderInnerType'] == $attribute['optionTitle']) {
+                            $sliderValue = $activeAttrOption['sliderValue'];
+                            break;
+                        }
+                    }
+                }elseif($activeAttrOption){
+                    $sliderValue = $activeAttrOption;
+                }
+        ?>
+                <div class="base-range-slider-wrap" data-slider-type="hair_cut_length" data-level="4" data-optionLevel="4_2_2" data-currentparent="m_hair_cut_styled_have" data-currentattr="m_hair_cut_styled_have_length" data-price="">
+                    <div class="range-slider-image" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                        <img alt="<?= __(trim($attribute['optionTitle'])) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="range-slider-code swiper-no-swiping">
+                        <div class="slideDetails">
+                            <h2><?= __(trim($attribute['optionTitle'])) ?></h2>
+                            <div class="slide-output-val"></div>
+                        </div>
+                        <div class="range-slider-wrap">
+                            <div class="range-slider-min"><?= $attribute['min']?></div>
+                            <div class="range-slider-minus">-</div>
+                            <div class="range-slider">
+                                <input
+                                    type="range"
+                                    min="<?= $attribute['min'] ?>"
+                                    max="<?= $attribute['max'] ?>"
+                                    step="<?= $attribute['step'] ?>"
+                                    value="<?= $sliderValue ?>"
+                                    data-orientation="horizontal"
+                                    data-unit="inch"
+                                    data-slider-type="Hair Cut Length"
+                                    data-range-slider-type="<?= $attribute['optionTitle']?>"
+                                    class="rangeInput"
+                                />
+                            </div>
+                            <div class="range-slider-plus">+</div>
+                            <div class="range-slider-max"><?= $attribute['max']?></div>
+                        </div>
+                    </div>
+                </div>
+                
+            <?php }
+        }
+    }

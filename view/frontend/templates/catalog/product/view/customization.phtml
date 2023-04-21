@@ -1,0 +1,17 @@
+
+<?php $_productId = $block->getProduct()->getId();
+ if($this->getProduct()->getResource()->getAttribute('is_custom_product')->getFrontend()->getValue($this->getProduct())=='Yes')
+{
+?>
+<div class="stock-btn-container customizations-btn-wrap">
+    <a href="<?php echo $this->getUrl('customizations/order?pid='.$_productId);?>">
+        <button type="button" class="action primary customizations-sub button">
+            <span class="customize-now btn-text"><?= __('Customize Now') ?></span>
+            <div class="icon-container">
+                <div class="btn-icon icon-left"> <i class="fas fa-edit"></i> </div>
+                <div class="btn-icon icon-right"> <i class="fas fa-edit"></i> </div>
+            </div>
+        </button>
+    </a>
+</div>
+<?php }?>

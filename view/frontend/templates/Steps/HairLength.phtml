@@ -1,0 +1,74 @@
+<?php
+   $productData = $block->getData();
+   $product = $productData['data']['product'];
+   $getPostParams = $productData['data']['getPostParams'];
+   $productId = $product->getID();
+   $getCurrentAttributes = $block->_getCurrentAttributesCall($product,$getPostParams);
+   $getPubCustomizationUrl = $block->getSiteMainUrl().'media/customization/';
+   $prices = $block->_getPricesArray($product);
+?>
+
+<?php
+   if ($getCurrentAttributes['attributeName'] == 'm_hair_length') {
+        $block->setOptionLevelToSession('1_1');
+        $block->setDoneOrNotStepToSession('');
+        $block->setSubTitleToSession(__('How long is the hair length you want for your hair system?'));
+        $optionPriceArray = '';
+        $getImagesByAttrName = $block->getImagesByAttrName('Length');
+        $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+        $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+        $min = 4;
+        $max = 24;
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            if(array_key_exists(trim($attribute),$prices)) {
+                preg_match_all('!\d+!', $attribute, $matches);
+                $optionPriceArray.=$matches[0][0]."=>".$this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($prices[trim($attribute)]).",";
+            }
+        }
+        if (count($getCurrentAttributes['attributValue']) > 1) {
+            $newOptionArr = $getCurrentAttributes['attributValue'];
+            $minArr = reset($newOptionArr);
+            $maxArr = end($newOptionArr);
+            preg_match_all('!\d+!', $minArr, $matches);
+            $min = $matches[0][0];
+            preg_match_all('!\d+!', $maxArr, $matches);
+            $max = $matches[0][0];
+        }
+        $optionPriceArray = substr($optionPriceArray,0,strlen($optionPriceArray)-1);
+        $sliderValue = 0;
+        $activeAttrOption = $block->_checkAlreadyInSessionSlide('m_hair_length','Length');
+        if (is_array($activeAttrOption) && count($activeAttrOption) > 0) {
+            $sliderValue = $activeAttrOption[0]['sliderValue'];
+        }elseif($activeAttrOption){
+            $sliderValue = $activeAttrOption;
+        }
+?>
+        <div class="base-range-slider-wrap" data-field-name="m_hair_length" data-slider-type="hair_length" data-price="<?= $optionPriceArray ?>" data-level="1" data-optionLevel="1_1" data-currentparent="m_hair_length" data-currentattr="m_hair_length">
+            <div class="range-slider-code swiper-no-swiping">
+                <div class="slideDetails">
+                    <h2><?= __('Length') ?></h2>
+                    <div class="slide-output-val"></div>
+                </div>
+                <div class="range-slider-wrap">
+                    <div class="range-slider-min"><?= $min ?></div>
+                    <div class="range-slider-minus">-</div>
+                    <div class="range-slider">
+                        <input
+                            type="range"
+                            min="<?= $min ?>"
+                            max="<?= $max ?>"
+                            step="2"
+                            value="<?= $sliderValue ?>"
+                            data-orientation="horizontal"
+                            data-unit="inch"
+                            data-slider-type="Hair Length"
+                            data-range-slider-type="Hair length"
+                            class="rangeInput"
+                        />
+                    </div>
+                    <div class="range-slider-plus">+</div>
+                    <div class="range-slider-max"><?= $max ?></div>
+                </div>
+            </div>
+        </div>
+   <?php } ?>

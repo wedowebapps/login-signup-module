@@ -1,0 +1,1385 @@
+<style>
+    .mobile-next-prev-btn.final-step-parent{
+        padding: 0 20px;
+        background-color: #fff;
+        height: 53px;
+        position: fixed;
+        bottom: 79px;
+        width: 100%;
+        box-shadow: 0 0 2px rgba(0,0,0,.2);
+    }
+
+  .mobile-next-prev-btn button.comman-btn.color-red.prev-btn.final-step{
+      bottom: 20%;
+      left: 0px;
+  }
+ .mobile-next-prev-btn button.next-btn.add-cart{
+     background: none;
+     box-shadow:none;
+     width: calc(100% - 30px);
+     font-size: 16px;
+     background-color: #9b1e1e;
+     text-align: center;
+     color: #fff;
+     line-height: 23px;
+     justify-content: center;
+     border-radius: 8px;
+     bottom: 86px;
+     height: 38px;
+     left: 15px;
+     font-weight: 800;
+ }
+</style>
+<div id="lordhairProductCustomization">
+    <div class="ajaxOverlay whiteBg" style="display: block;">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
+    <div class="customizations-wrap">
+        <header class="modal-header">
+            <button class="action-close" data-role="closeBtn" type="button">
+                <span><?= $block->escapeHtml(__('Close')) ?></span>
+                 <span id="purl" style="display:none;"><?= $block->getProductObj()->getProductUrl() ?></span>
+            </button>
+        </header>
+        <div class="product-menu-wrap">
+            <div id="product-menu-inner-wrap" class="product-menu-inner-wrap">
+                <div class="full-sidebar-menu" style="background: url('<?= $block->getProdImage() ?>');"></div>
+                <div class="product-details-wrp">
+                    <div class="base-number">
+                        <div class="slider-wraper swiper-container thumbsSliderWrap">
+                            <ul id="progressbar" class="thumbsStepSlide swiper-wrapper">
+                                <?php
+                                    $html = '';
+                                    foreach($block->getTotalSteps() as $step) {
+                                        $html.='<li class="step_'.$step['step'].' swiper-slide" data-step="step_'.$step['step'].'" data-stepCount="'.$step['step'].'" data-status="'.$step['isCompleted'].'" data-stepCode="'.$step['attribute_value'].'">';
+                                        $html.='<div class="stepcount caret" data-src="'.$step['step'].'_0" tabindex="-1" >'.__($step['title']).'</div>';
+                                        $html.='</li>';
+                                    }
+                                    echo $html;
+                                ?>
+                            </ul>
+                        </div>
+                        <div class="slider-nav-step">
+                            <span class="currentNavStep">1</span>/<?php echo count($block->getTotalSteps()); ?>
+                        </div>
+                        <div class="iOSShowBottom"></div>
+                    </div>
+                    <div class="base-chart step-5">
+                        <div class="ajaxOverlay whiteBg">
+                            <div class="cv-spinner">
+                                <span class="spinner"></span>
+                            </div>
+                        </div>
+                        <div class="slider-wraper swiper-container mainStepWrapper">
+                            <div class="mainStepSlide swiper-wrapper">
+                                <?php
+                                    $html = '';
+                                    $hideReadMore = array(
+                                        'm_additional_instruction',
+                                        'm_hair_color_for_stock_piece',
+                                        'm_cut_to_size',
+                                        'stock_base_size',
+                                        'm_color_of_clip',
+                                        'm_clips_size',
+                                        'm_color_of_wig_stand',
+                                        'm_front_contour',
+                                        'm_hair_color_for_women_stock',
+                                        'hair_length_women_hairpieces',
+                                        'm_keep_on_file',
+                                        'stock_lace_front',
+                                        'm_refilled_hair_color',
+                                        'm_refilled_hair_length',
+                                        'm_repair_minor_tears',
+                                        'm_replace_new_front',
+                                        'm_your_system_age',
+                                        'm_wig_hair_length'
+                                    );
+                                    foreach($block->getTotalSteps() as $step) {
+                                        $html.='<div class="step_'.$step['step'].' swiper-slide" data-step="step_'.$step['step'].'" data-stepCount="'.$step['step'].'" data-status="'.$step['isCompleted'].'" data-stepCode="'.$step['attribute_value'].'">';
+                                        $html.='<div class="base-title-wrap">';
+                                        $html.='<h1>'.__($step['title']).'</h1>';
+                                        $html.='<div class="stepSubTitle"></div>';
+                                        if (!in_array($step['attribute_value'], $hideReadMore)) {
+                                            $html.='<div class="readMoreWrap"><span class="open-btn">'.__('Read More').'</span></div>';
+                                        }
+                                        $html.='</div>';
+                                        $html.='<div class="base-item-wrap">';
+                                        $html.='<div class="base-item-content">';
+                                        $html.='</div>';
+                                        $html.='</div>';
+                                        $html.='</div>';
+                                    }
+                                    echo $html;
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="base-footer">
+                        <ul class="pagination">
+                            <div class="next-prev-button">
+                                <div class="prev-button-wrap">
+                                    <button type="button" style="display:none;" class="comman-btn color-red prev-btn"><?= $block->escapeHtml(__('Previous')) ?></button>
+                                </div>
+                                <div class="price-details">
+                                    <p><?= __('Total Price') ?>: <span class="currencySymbol"><?php echo $block->getCurrentCurrencySymbol(); ?></span><span class="productPrice totalProdPrice" id="footerPrice"><?php echo $block->getPriceInfo()->getValue(); ?></span>
+                                    </span></p>
+                                </div>
+                                <div class="next-button-wrap">
+                                    <button type="button" class="comman-btn color-red next-btn"><?= $block->escapeHtml(__('Next')) ?></button>
+                                </div>
+                            </div>
+                        </ul>
+                        <div class="mobile-next-prev-btn">
+                            <button type="button" class="comman-btn color-red prev-btn"><?= $block->escapeHtml(__('Pre')) ?></button>
+                            <button type="button" class="comman-btn color-red next-btn"><?= $block->escapeHtml(__('Next')) ?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    $getPriceArr = $this->helper('Lordhair\Customizations\Helper\Data')->getOptionPriceArray($block->getProductObj());
+    $basesizeValue = array('Partial (size ≤ 7"x10", or area ≤ 70 square inches)','Regular (7"x10" < size ≤ 8"x10", or 70 square inches < area ≤ 80 square inches)','Oversize (8"x10" < size ≤ 10"x10", or 80 square inches < area ≤ 100 square inches)','Full cap (size > 10"x10", or area > 100 square inches)');
+?>
+<script type="text/javascript">
+requirejs(['jquery', 'mage/url', 'lordhair_fancybox', 'Swiper', 'mage/mage', 'rangeslider'], function($, url, lordhair_fancybox, Swiper) {
+    'use strict';
+    url.setBaseUrl(BASE_URL);
+    const getSiteUrl = url.build('');
+    const gePubMediaLink = url.build('media/customization');
+    const getStepDataAjaxUrl = url.build('customizations/ajax/getStepData');
+    const setNextPrevDataAjaxUrl = url.build('customizations/ajax/setNextPrevData');
+    const uploadImagesAjaxUrl = url.build('customizations/ajax/uploadImages');
+    const deleteImageAjaxUrl = url.build('customizations/ajax/deleteImage');
+    const sessionImagesAjaxUrl = url.build('customizations/ajax/sessionImages');
+    var PriceChange = 0;
+    const totalStepCount = '<?= count($block->getTotalSteps()) ?>' - 1;
+    const getCurrentStep = '<?= $block->currentStepNumber() ?>';
+    const previousPage = '<?= isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '' ?>';
+    var  queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var pid = urlParams.get('pid');
+
+    //create productCustomization class
+    class productCustomization {
+
+        constructor(store) {
+            this.store = store;
+        }
+        get getStore() {
+            return this.store;
+        }
+        set needToScroll(data) {
+            this.store.needToScroll = data;
+        }
+        set leftSidebarMain(data) {
+            this.store.leftSidebarMain = data;
+        }
+        set productDetails(data) {
+            this.store.productDetails = data;
+        }
+        set finalPrice(data) {
+            this.store.productDetails.finalPrice = data;
+        }
+        set currentOptionPrice(data) {
+            this.store.currentOptionPrice = data;
+        }
+        set leftSidebarHtml(data) {
+            this.store.leftSidebarHtml = data;
+        }
+        set leftSideMainHtml(data) {
+            this.store.leftSideMainHtml = data;
+        }
+        set currentStep(data) {
+            this.store.currentStep = data;
+        }
+        set currentOptionHtml(data) {
+            this.store.currentOptionHtml = data;
+        }
+        set selectedOptionAttr(data) {
+            this.store.optionData.selectedOptionAttr = data;
+        }
+        set optionDataValues(data) {
+            this.store.optionData.values = data;
+        }
+        set optionData(data) {
+            this.store.optionData = data;
+        }
+        set parentAttr(data) {
+            this.store.optionData.parentAttr = data;
+        }
+        set currentAttr(data) {
+            this.store.optionData.currentAttr = data;
+        }
+        set optionType(data) {
+            this.store.optionData.optionType = data;
+        }
+        set optionLevel(data) {
+            this.store.optionData.optionLevel = data;
+        }
+        set isPrevButtonEnabled(data) {
+            this.store.isPrevButtonEnabled = data;
+        }
+        set isPrevClicked(data) {
+            this.store.isPrevClicked = data;
+        }
+        set upgradedPrice(data) {
+            this.store.upgradedPrice = data;
+        }
+    }
+
+    var productCustStore = {
+        'needToScroll': 1,
+        'leftBgImage': '',
+        'isPrevButtonEnabled': '',
+        'isPrevClicked': 0,
+        'leftSidebarMain': {},
+        'productDetails': {},
+        'currentOptionPrice': 0,
+        'leftSidebarHtml': '',
+        'leftSideMainHtml' : '',
+        'currentStep': 1,
+        'currentOptionHtml': '',
+        'optionData' : {
+            'optionType': '',
+            'selectedOptionAttr': '',
+            'currentAttr': '',
+            'parentAttr': '',
+            'optionLevel': '',
+            'values': [],
+        },
+        'upgradedPrice': []
+    };
+
+    //create productCustomization object
+    let productCustObj = new productCustomization(productCustStore);
+
+    //Function for range slider
+    function inchToCmCallback(v_in) {
+        var v_cm = v_in*2.54;
+        return v_cm.toFixed(1);
+    }
+    function getValues(elements) {
+        return Array.from(elements).map(el => el.value);
+    }
+    function totalValuescount(total, num) {
+        return total * num;
+    }
+    function updateResult(values) {
+        return values.reduce(totalValuescount);
+    }
+
+    function calculatePriceSlider(sliderElemnt,value,initialize=false) {
+        var priceData = 0;
+        var priceDataTemp = '';
+        var productDetailsObj = productCustObj.getStore.productDetails;
+        var currencySymbol = productDetailsObj.currencySymbol;
+        var upgradedPrice = productCustObj.getStore.upgradedPrice;
+        const stepDivClass = `step_${productCustObj.getStore.currentStep}`;
+        var countPrice = 0;
+        var changedPrice = 0;
+        const sliders = sliderElemnt.parents(`.mainStepSlide .${stepDivClass}`).find('input[type=range]');
+        const values = getValues(sliders);
+        countPrice = updateResult(values);
+        if (!initialize) {
+            $.each(sliders, function( index, value ) {
+                $(this).parents('.range-slider-code').find("em").remove();
+            });
+        }
+        const currentUnit = sliderElemnt.attr('data-unit');
+        var outputDiv = sliderElemnt.parents(`.mainStepSlide .${stepDivClass} .range-slider-code`).find('.slide-output-val');
+        var priceData1 = [];
+        var priceResult = '';
+        if (currentUnit == 'inch') {
+            var setOutpuHtml = '';
+            if (value == 0) {
+                setOutpuHtml = `0 Inch (~0.0cm)`;
+            }
+            var getCm = inchToCmCallback(value);
+            if($(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`).attr('data-slider-type') == "topper")
+            {
+                if(countPrice <= 70)
+                {
+                    priceDataTemp='';
+                    priceData=0;
+                }
+                else if(countPrice > 70 && countPrice <= 80)
+                {
+                    changedPrice = '<?= $block->convertToBaseCurrency($getPriceArr[$basesizeValue[1]]) ?>';
+                    if (changedPrice < 0) {
+                        priceDataTemp="-"+`${currencySymbol}`+parseFloat(changedPrice.replace('-', '')).toFixed(2);
+                    } else {
+                        priceDataTemp=`${currencySymbol}`+parseFloat(changedPrice).toFixed(2);
+                    }
+                    priceData = parseFloat(changedPrice);
+                }
+                else if(countPrice > 80 && countPrice <= 100)
+                {
+                    changedPrice = '<?= $block->convertToBaseCurrency($getPriceArr[$basesizeValue[2]]) ?>';
+                    if (changedPrice < 0) {
+                        priceDataTemp="-"+`${currencySymbol}`+parseFloat(changedPrice.replace('-', '')).toFixed(2);
+                    } else {
+                        priceDataTemp=`${currencySymbol}`+parseFloat(changedPrice).toFixed(2);
+                    }
+                    priceData = parseFloat(changedPrice);
+                }
+                else if(countPrice > 100)
+                {
+                    changedPrice = '<?= $block->convertToBaseCurrency($getPriceArr[$basesizeValue[3]]) ?>';
+                    if (changedPrice < 0) {
+                        priceDataTemp="-"+`${currencySymbol}`+parseFloat(changedPrice.replace('-', '')).toFixed(2);
+                    } else {
+                        priceDataTemp=`${currencySymbol}`+parseFloat(changedPrice).toFixed(2);
+                    }
+                    priceData = parseFloat(changedPrice);
+                }
+
+                $.each(upgradedPrice, function(key,valueObj){
+                    if (key == 'm_base_size_section') {
+                        productCustObj.finalPrice = productDetailsObj.finalPrice - valueObj;
+                        delete upgradedPrice['m_base_size_section'];
+                        productCustObj.upgradedPrice = upgradedPrice;
+                    }
+                });
+            }
+            else if($(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`).attr('data-slider-type') == "full_cap")
+            {
+                changedPrice = '<?= $block->convertToBaseCurrency($getPriceArr[$basesizeValue[3]]) ?>';
+                if (changedPrice < 0) {
+                    priceDataTemp="-"+`${currencySymbol}`+parseFloat(changedPrice.replace('-', '')).toFixed(2);
+                } else {
+                    priceDataTemp=`${currencySymbol}`+parseFloat(changedPrice).toFixed(2);
+                }
+                priceData = parseFloat(changedPrice);
+
+                $.each(upgradedPrice, function(key,valueObj){
+                    if (key == 'm_base_size_section') {
+                        productCustObj.finalPrice = productDetailsObj.finalPrice - valueObj;
+                        delete upgradedPrice['m_base_size_section'];
+                        productCustObj.upgradedPrice = upgradedPrice;
+                    }
+                });
+            }
+            else if($(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`).attr('data-slider-type') == "hair_length")
+            {
+                priceData = $(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`).attr('data-price').split(",");
+                $.each( priceData, function( key, values ) {
+                    priceData1=values.split("=>");
+                    if(priceData1[0]==value)
+                    {
+                        priceResult=priceData1[1];
+                    }
+                });
+
+                priceData = parseFloat(priceResult);
+
+                if(priceResult!="")
+                {
+                    if (parseFloat(priceResult) < 0) {
+                        priceDataTemp="-"+`${currencySymbol}`+parseFloat(priceResult).toFixed(2);
+                    } else{
+                        priceDataTemp="+"+`${currencySymbol}`+parseFloat(priceResult).toFixed(2);
+                    }
+                }
+                else
+                {
+                    priceData=0;
+                    priceDataTemp=0;
+                }
+
+                $.each(upgradedPrice, function(key,valueObj){
+                    if (key == 'm_hair_length') {
+                        productCustObj.finalPrice = productDetailsObj.finalPrice - valueObj;
+                        delete upgradedPrice['m_hair_length'];
+                        productCustObj.upgradedPrice = upgradedPrice;
+                    }
+                });
+            }
+            if(priceDataTemp != 0){
+                setOutpuHtml = `${value} Inch (~${getCm}cm)`+'<em style="color:#e50012;">'+priceDataTemp+'</em>';
+            } else {
+                setOutpuHtml = `${value} Inch (~${getCm}cm)`;
+            }
+            outputDiv.html(setOutpuHtml);
+        } else if (currentUnit == 'modulo') {
+            setOutpuHtml = `${value}%`;
+            outputDiv.html(setOutpuHtml);
+        }
+
+        if (initialize) {
+            $.each(sliders, function( index, value ) {
+                if (index > 0) {
+                    $(this).parents('.range-slider-code').find("em").remove();
+                }
+            });
+        }
+
+        return priceData;
+    }
+
+    function sliderPluginInit() {
+        $('input[type="range"]').rangeslider({
+            polyfill: false,
+            rangeClass: 'rangeslider',
+            disabledClass: 'rangeslider--disabled',
+            horizontalClass: 'rangeslider--horizontal',
+            verticalClass: 'rangeslider--vertical',
+            fillClass: 'rangeslider__fill',
+            handleClass: 'rangeslider__handle',
+            // Callback function
+            onInit: function() {
+                var sliderElemnt = this.$element;
+                var priceData = calculatePriceSlider(sliderElemnt, this.value, true);
+                var productDetailsObj = productCustObj.getStore.productDetails;
+                var finalPrice = productDetailsObj.finalPrice;
+                finalPrice = parseFloat(finalPrice)+priceData;
+                $(".totalProdPrice").text(finalPrice.toFixed(2));
+            },
+            // Callback function
+            onSlide: function(position, value) {
+                var sliderElemnt = this.$element;
+                var priceData = calculatePriceSlider(sliderElemnt,value);
+                var productDetailsObj = productCustObj.getStore.productDetails;
+                var finalPrice = productDetailsObj.finalPrice;
+                finalPrice = parseFloat(finalPrice)+priceData;
+                $(".totalProdPrice").text(finalPrice.toFixed(2));
+            }
+        });
+    };
+
+    function uploaderPluginInit() {
+        $('#uploader').empty();
+        var uploader = new lordhair_fancybox.FineUploader({
+            element: document.getElementById("uploader"),
+            debug: true,
+            request: {
+                endpoint: uploadImagesAjaxUrl
+            },
+            session : {
+                endpoint : sessionImagesAjaxUrl
+            },
+            deleteFile: {
+                enabled: true, // defaults to false
+                endpoint: deleteImageAjaxUrl
+            },
+            drawThumbnail: function (fileId, imgOrCanvas, maxSize, fromServer, customResizeFunction)
+            {
+                if (!fromServer && qq.supportedFeatures.imagePreviews) {
+                    fileOrUrl = this.getFile(fileId);
+                }
+            },
+            validation: {
+                itemLimit: 5,
+                sizeLimit: 10485760,
+                allowedExtensions: ['bmp', 'png', 'jpg', 'jpeg']
+            }
+        });
+    }
+
+    //nextPrecButtonClick
+    function nextPrevClickCallback() {
+
+        var currentStep = productCustObj.getStore.currentStep;
+        var isPrevClicked = productCustObj.getStore.isPrevClicked;
+        const optionData = productCustObj.getStore.optionData;
+        const stepDivClass = `step_${productCustObj.getStore.currentStep}`;
+        const storeProductDetails = productCustObj.getStore.productDetails;
+        const currentOptionPrice = productCustObj.getStore.currentOptionPrice;
+        const prevPramas = {
+            'pid': pid,
+            'currentStep': currentStep,
+            'optionData': optionData,
+            'isPrevClicked': isPrevClicked,
+            'storeProductDetails': storeProductDetails,
+            'currentOptionPrice': currentOptionPrice
+        }
+
+        $.ajax({
+            type: "POST",
+            url: setNextPrevDataAjaxUrl,
+            async: false,
+            data: prevPramas,
+            dataType: "json",
+            success: function(response) {
+
+                if (!response.errors) {
+
+                    var data = response.data;
+                    if (data.backStep != undefined) {
+                        var duration = 300;
+                        var nextSlide = data.backStep;
+                        $mainStepWrapper.slideTo( nextSlide,duration,false );
+                        return;
+                    }
+
+                    $("#progressbar").find(".swiper-slide").each(function(){
+                        var status = $(this).attr('data-status');
+                        if (status > 0 && status < 1) {
+                            $(this).addClass('half');
+                            $(this).removeClass('full');
+                        } else if(status && status == 1){
+                            $(this).addClass('full');
+                            $(this).removeClass('half');
+                        }
+                    });
+
+                    if (data.doneOrNotStep && data.doneOrNotStep == 'half') {
+                        $( `#progressbar .swiper-slide.${stepDivClass}` ).attr('data-status','0.5');
+                        $( `#progressbar .swiper-slide.${stepDivClass}` ).removeClass('full');
+                        $( `#progressbar .swiper-slide.${stepDivClass}` ).addClass('half');
+                    } else if(data.doneOrNotStep && data.doneOrNotStep == 'full') {
+                        $( `#progressbar .swiper-slide.${stepDivClass}` ).attr('data-status','1');
+                        $( `#progressbar .swiper-slide.${stepDivClass}` ).removeClass('half');
+                        $( `#progressbar .swiper-slide.${stepDivClass}` ).addClass('full');
+                    }
+
+                    if (data.currentOptionHtml && (data.currentOptionHtml).trim() != '') {
+
+                        if (data.productDetails) {
+                            productCustObj.productDetails = data.productDetails;
+                        }
+
+                        if (data.currentOptionLevel) {
+                            productCustObj.optionLevel = data.currentOptionLevel;
+                        }
+
+                        productCustObj.currentOptionHtml = data.currentOptionHtml;
+
+                        $('.slider-nav-step .currentNavStep').html(currentStep+1);
+
+                        $( `#product-menu-inner-wrap .product-details-wrp .${stepDivClass} .base-item-content` ).html( productCustObj.getStore.currentOptionHtml );
+
+                        $( `.mainStepSlide .${stepDivClass} .stepSubTitle` ).html( data.subTitle );
+
+                        if (stepDivClass == 'step_0') {
+                            var stepOptionLevel = 1;
+                            if (document.querySelector('.step_0 .base-range-slider-wrap') !== null) {
+                                if ($(`.step_0 .base-range-slider-wrap`).attr('data-level')) {
+                                    stepOptionLevel = $(`.step_0 .base-range-slider-wrap`).attr('data-level');
+                                }
+                            }
+
+                            if (document.querySelector(`.step_0 .base-item`) !== null) {
+                                if ($(`.step_0 .base-item`).attr('data-level')) {
+                                    stepOptionLevel = $(`.step_0 .base-item`).attr('data-level');
+                                }
+                            }
+
+                            if (stepOptionLevel == 1) {
+                                $('.pagination .prev-button-wrap button').css({"display": "none"});
+                                $('.mobile-next-prev-btn .prev-btn').css({"display": "none"});
+
+                            } else {
+                                $('.pagination .prev-button-wrap button').css({"display": "flex"});
+                                $('.mobile-next-prev-btn .prev-btn').css({"display": "flex"});
+                            }
+                        } else {
+                            $('.pagination .prev-button-wrap button').css({"display": "flex"});
+                            $('.mobile-next-prev-btn .prev-btn').css({"display": "flex"});
+                        }
+                        showHideNextButton(currentStep);
+                    } else {
+
+                        var duration = 300;
+                        var nextSlide = currentStep + 1;
+                        $mainStepWrapper.slideTo( nextSlide,duration,false );
+                    }
+
+                    currentStep = productCustObj.getStore.currentStep;
+
+                    if (currentStep == totalStepCount) {
+                        $('.base-footer .next-button-wrap button').text('Add To Cart');
+                        $('.base-footer .next-button-wrap button').addClass('add-cart');
+                        $('.base-footer .mobile-next-prev-btn .next-btn').addClass('add-cart');
+                    } else {
+                        $('.base-footer .next-button-wrap button').text('Next');
+                        $('.base-footer .mobile-next-prev-btn .next-btn').removeClass('add-cart');
+                        $('.base-footer .next-button-wrap button').removeClass('add-cart');
+                    }
+
+                    //Next button enabled or disabled functionality
+                    let getBaseItemLevel = $(document).find(`.mainStepSlide .${stepDivClass} .base-item`).attr('data-optionlevel');
+                    let getBaseItemActive = $(document).find(`.mainStepSlide .${stepDivClass} .base-item .base-item-inner.active`);
+                    let getRangeSliderElm = $(document).find(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`);
+                    let getTextBoxElm = $(document).find(`.mainStepSlide .${stepDivClass} .base-item.textbox`);
+
+                    if ((getBaseItemLevel && getBaseItemLevel == '1_1') || getRangeSliderElm.length > 0 || getTextBoxElm.length > 0 || getBaseItemActive.length > 0) {
+                        $('.base-footer .next-button-wrap button').addClass('next-btn');
+                        $('.base-footer .next-button-wrap button').removeClass('disabled');
+                        $('.base-footer .mobile-next-prev-btn .next-btn').removeClass('disabled');
+                    } else {
+                        $('.base-footer .next-button-wrap button').addClass('disabled');
+                        $('.base-footer .next-button-wrap button').removeClass('next-btn');
+                        $('.base-footer .mobile-next-prev-btn .next-btn').addClass('disabled');
+                    }
+                    //End Next button enabled or disabled functionality
+
+                    if (data.redirectCart){
+                        window.location.href = data.redirectCart;
+                    } else {
+                        setTimeout(function(){
+                            $(".ajaxOverlay").each(function() {
+                                $(this).hide();
+                            });
+                        }, 400);
+                    }
+
+                    if ($('#product-menu-inner-wrap').height() < 750 && $('#product-menu-inner-wrap').height() > 700 && $('#product-menu-inner-wrap').width() > 992) {
+                        $( `#product-menu-inner-wrap .product-details-wrp .${stepDivClass} .base-item-content`).css('padding-bottom', 220);
+                    }
+                    if ($('#product-menu-inner-wrap').height() < 700 && $('#product-menu-inner-wrap').height() > 600 && $('#product-menu-inner-wrap').width() > 992) {
+                        $( `#product-menu-inner-wrap .product-details-wrp .${stepDivClass} .base-item-content`).css('padding-bottom', 320);
+                    }
+
+                } else {
+                    alert('Something went wrong please try again after some time!');
+                    if (previousPage) {
+                        //window.location.href = previousPage;
+                    } else {
+                        //window.location.href = getSiteUrl;
+                    }
+                }
+            },
+            error: function(xhr, status, error){
+                if (status === 0) {
+                    alert('Not connect.n Verify Network.');
+                } else if (status == 404) {
+                    alert('Requested page not found. [404]');
+                } else if (status == 500) {
+                    alert('Internal Server Error [500].');
+                } else if (exception === 'parsererror') {
+                    alert('Requested JSON parse failed.');
+                } else if (exception === 'timeout') {
+                    alert('Time out error.');
+                } else if (exception === 'abort') {
+                    alert('Ajax request aborted.');
+                } else {
+                    alert('Uncaught Error.n' + xhr.statusText);
+                }
+                if (previousPage) {
+                    window.location.href = previousPage;
+                } else {
+                    window.location.href = getSiteUrl;
+                }
+            }
+        });
+    }
+
+    function getLeftSideData () {
+
+        let stepDivClass = `step_${productCustObj.getStore.currentStep}`;
+        let getStepCode = $(`#progressbar .${stepDivClass}`).attr('data-stepCode');
+        var prevPramas = {
+            'currentStepCode': getStepCode,
+            'pId': pid
+        }
+
+        $.ajax({
+            type: "POST",
+            url: getStepDataAjaxUrl,
+            async: false,
+            data: prevPramas,
+            dataType: "json",
+            success: function(response) {
+
+                if (!response.errors) {
+                    var data = response.data;
+                    if (data.leftBgImage) {
+                        productCustObj.leftBgImage = data.leftBgImage;
+                    }
+                    productCustObj.leftSideMainHtml = data.leftSideMainHtml;
+                    $( "#product-menu-inner-wrap .full-sidebar-menu" ).html( productCustObj.getStore.leftSideMainHtml );
+                    $(".totalProdPrice").text(data.finalPrice.toFixed(2));
+                    productCustObj.finalPrice = data.finalPrice;
+                    productCustObj.upgradedPrice = data.upgradedPrice;
+                }
+            },
+            error: function(xhr, status, error){
+                if (status === 0) {
+                    alert('Not connect.n Verify Network.');
+                } else if (status == 404) {
+                    alert('Requested page not found. [404]');
+                } else if (status == 500) {
+                    alert('Internal Server Error [500].');
+                } else if (exception === 'parsererror') {
+                    alert('Requested JSON parse failed.');
+                } else if (exception === 'timeout') {
+                    alert('Time out error.');
+                } else if (exception === 'abort') {
+                    alert('Ajax request aborted.');
+                } else {
+                    alert('Uncaught Error.n' + xhr.statusText);
+                }
+                if (previousPage) {
+                    window.location.href = previousPage;
+                } else {
+                    window.location.href = getSiteUrl;
+                }
+            }
+        });
+    }
+
+    function syncPosition(current) {
+        var stepDivClass = `step_${current}`;
+
+        productCustObj.currentStep = current;
+        var newOptionData = {
+            'optionType': '',
+            'selectedOptionAttr': '',
+            'currentAttr': '',
+            'parentAttr': '',
+            'optionLevel': '',
+            'values': [],
+        }
+
+        productCustObj.optionData = newOptionData;
+        productCustObj.isPrevClicked = 0;
+
+        const getStepCode = $(`#progressbar .${stepDivClass}`).attr('data-stepCode');
+
+        if( $(`.mainStepSlide .${stepDivClass} .base-item-content`).is(':empty') || getStepCode == 'm_hair_type' || getStepCode == 'm_hair_density'){
+            productCustObj.optionLevel = '1_1';
+            setTimeout(function(){
+                nextPrevClickCallback();
+            }, 200);
+        } else {
+            $('.slider-nav-step .currentNavStep').html(current+1);
+            var optionLevel = '';
+            if ($(`.mainStepSlide .${stepDivClass}`).find(".base-item").length > 0) {
+                $(`.mainStepSlide .${stepDivClass}`).find(".base-item").each(function(){
+                    optionLevel = $(this).attr('data-optionLevel');
+                });
+            }
+            if ($(`.mainStepSlide .${stepDivClass}`).find(".base-range-slider-wrap").length > 0) {
+                $(`.mainStepSlide .${stepDivClass}`).find(".base-range-slider-wrap").each(function(){
+                    optionLevel = $(this).attr('data-optionLevestepcount l');
+                });
+            }
+
+            productCustObj.optionLevel = optionLevel;
+
+            if (stepDivClass == 'step_0') {
+                var stepOptionLevel = 1;
+                if (document.querySelector('.step_0 .base-range-slider-wrap') !== null) {
+                    if ($(`.step_0 .base-range-slider-wrap`).attr('data-level')) {
+                        stepOptionLevel = $(`.step_0 .base-range-slider-wrap`).attr('data-level');
+                    }
+                }
+                if (document.querySelector(`.step_0 .base-item`) !== null) {
+                    if ($(`.step_0 .base-item`).attr('data-level')) {
+                        stepOptionLevel = $(`.step_0 .base-item`).attr('data-level');
+                    }
+                }
+                if (stepOptionLevel == 1) {
+                    $('.pagination .prev-button-wrap button').css({"display": "none"});
+                    $('.mobile-next-prev-btn .prev-btn').css({"display": "none"});
+                } else {
+                    $('.pagination .prev-button-wrap button').css({"display": "flex"});
+                    $('.mobile-next-prev-btn .prev-btn').css({"display": "flex"});
+                }
+            } else {
+                $('.pagination .prev-button-wrap button').css({"display": "flex"});
+                $('.mobile-next-prev-btn .prev-btn').css({"display": "flex"});
+            }
+
+            if (document.querySelector(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`) !== null ||
+            document.querySelector(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`) !== null ||
+            document.querySelector(`.mainStepSlide .${stepDivClass} textarea`) !== null) {
+                $('.mobile-next-prev-btn .next-btn').css({"display": "flex"});
+            } else {
+                $('.mobile-next-prev-btn .next-btn').css({"display": "none"});
+            }
+
+            //Next button enabled or disabled functionality
+            let getBaseItemLevel = $(document).find(`.mainStepSlide .${stepDivClass} .base-item`).attr('data-optionlevel');
+            let getBaseItemActive = $(document).find(`.mainStepSlide .${stepDivClass} .base-item .base-item-inner.active`);
+            let getRangeSliderElm = $(document).find(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`);
+            let getTextBoxElm = $(document).find(`.mainStepSlide .${stepDivClass} .base-item.textbox`);
+
+            if ((getBaseItemLevel && getBaseItemLevel == '1_1') || getRangeSliderElm.length > 0 || getTextBoxElm.length > 0 || getBaseItemActive.length > 0) {
+                $('.base-footer .next-button-wrap button').addClass('next-btn');
+                $('.base-footer .next-button-wrap button').removeClass('disabled');
+            } else {
+                $('.base-footer .next-button-wrap button').addClass('disabled');
+                $('.base-footer .next-button-wrap button').removeClass('next-btn');
+            }
+            //End Next button enabled or disabled functionality
+            setTimeout(function(){
+                $(".ajaxOverlay").each(function() {
+                    $(this).hide();
+                });
+            }, 400);
+        }
+        //get current step left sidebar data
+        setTimeout(function(){
+            getLeftSideData();
+        }, 400);
+
+        if (current == totalStepCount) {
+            $('.base-footer .next-button-wrap button').text('Add To Cart');
+            $('.base-footer .next-button-wrap button').addClass('add-cart');
+            $('.base-footer .mobile-next-prev-btn .next-btn').addClass('add-cart');
+            $('.base-footer .mobile-next-prev-btn .next-btn').text('Add To Cart');
+            $('.base-footer .mobile-next-prev-btn .prev-btn').addClass('final-step');
+            $('.base-footer .mobile-next-prev-btn .prev-btn').parent().addClass('final-step-parent');
+        } else {
+            $('.base-footer .next-button-wrap button').text('Next');
+            $('.base-footer .mobile-next-prev-btn .next-btn').removeClass('add-cart');
+            $('.base-footer .mobile-next-prev-btn .prev-btn').removeClass('final-step');
+            $('.base-footer .mobile-next-prev-btn .prev-btn').parent().removeClass('final-step-parent');
+            $('.base-footer .mobile-next-prev-btn .next-btn').text('Next');
+            $('.base-footer .next-button-wrap button').removeClass('add-cart');
+        }
+
+        $('body').addClass("mobile");
+    }
+
+    function activeCurrentSlide(activeIndex) {
+        $("#progressbar .swiper-slide").each(function() {
+           var thisIndex = $(this).attr('data-stepcount');
+           if (thisIndex == activeIndex) {
+                $(this).addClass('swiper-slide-current');
+           } else {
+               $(this).removeClass('swiper-slide-current');
+           }
+        });
+    }
+
+    function scrollToTop(scrollDuration) {
+        var scrollStep = -window.scrollY / (scrollDuration / 15),
+        scrollInterval = setInterval(function(){
+            if ( window.scrollY != 0 ) {
+                window.scrollBy( 0, scrollStep );
+            }
+            else clearInterval(scrollInterval);
+        },15);
+    }
+
+    function showHideNextButton(current){
+        var stepDivClass = `step_${current}`;
+        if (document.querySelector(`.mainStepSlide .${stepDivClass} .base-range-slider-wrap`) !== null) {
+            sliderPluginInit();
+            $('.mobile-next-prev-btn .next-btn').css({"display": "flex"});
+        } else if (document.querySelector(`.mainStepSlide .${stepDivClass} #uploader`) !== null) {
+            uploaderPluginInit();
+            $('.mobile-next-prev-btn .next-btn').css({"display": "flex"});
+        } else if (document.querySelector(`.mainStepSlide .${stepDivClass} .unrequired`) !== null) {
+            $('.mobile-next-prev-btn .next-btn').css({"display": "flex"});
+        } else {
+            $('.mobile-next-prev-btn .next-btn').css({"display": "none"});
+        }
+    }
+
+    //start mainStepWrapper
+
+    var $mainStepWrapper = new Swiper('.mainStepWrapper', {
+        spaceBetween: 0,
+        loop: false,
+        calculateHeight:true,
+        initialSlide: getCurrentStep,
+        preventInteractionOnTransition: true,
+        shortSwipes: false,
+        breakpoints: {
+            // when window width is <= 768px
+            768: {
+                shortSwipes: true,
+            }
+        },
+        on: {
+            init: function () {
+                if (getCurrentStep == 0) {
+                    syncPosition(this.activeIndex);
+                }
+            },
+            slideChange: function () {
+                $(`.product-details-wrp .ajaxOverlay`).show();
+                syncPosition(this.activeIndex);
+                activeCurrentSlide(this.activeIndex);
+                setHeightOfSlide(this.activeIndex,stepHeight);
+                scrollToTop(300);
+                showHideNextButton(this.activeIndex);
+            }
+        }
+    });
+
+    //End mainStepWrapper
+
+    //start thumbsStepSlide
+
+    var $thumbsStepSlide = new Swiper('.thumbsSliderWrap', {
+        spaceBetween: 0,
+        centeredSlides: true,
+        slidesPerView: 5,
+        slideToClickedSlide: true,
+        loop: false,
+        breakpoints: {
+            // when window width is <= 320px
+            320: {
+                slidesPerView: 2,
+            },
+            // when window width is <= 480px
+            480: {
+                slidesPerView: 3,
+            },
+            // when window width is <= 640px
+            768: {
+                slidesPerView: 3,
+            },
+            // when window width is <= 640px
+            1200: {
+                slidesPerView: 3,
+            },
+            1440: {
+                slidesPerView: 4,
+            }
+
+        },
+        freeMode: true,
+        longSwipes: true,
+        freeModeSticky: true,
+        preventInteractionOnTransition: true,
+        on: {
+            init: function () {
+                activeCurrentSlide(getCurrentStep);
+            },
+            click: function () {
+                $mainStepWrapper.slideTo( this.activeIndex,600,false );
+                activeCurrentSlide(this.activeIndex);
+            }
+        }
+    });
+
+    //End thumbsStepSlide
+
+    $mainStepWrapper.controller.control = $thumbsStepSlide;
+
+    var stepHeight = 0;
+
+    $mainStepWrapper.on('touchStart', function () {
+        setHeightOfSlide($mainStepWrapper.activeIndex,stepHeight);
+    });
+
+    function setHeightOfSlide(activeIndex) {
+        var stepDivClass = `step_${activeIndex}`;
+        var getWindowHeight = $(window).height();
+        var baseItemContentHight = $(`.mainStepSlide .${stepDivClass} .base-item-content`).outerHeight();
+        if (baseItemContentHight > getWindowHeight) {
+            var currStepHeight = baseItemContentHight + 100;
+        } else {
+            var currStepHeight = getWindowHeight + 100;
+        }
+        if (currStepHeight != stepHeight) {
+            $(`.mainStepSlide .${stepDivClass}`).parents('.mainStepSlide').css('height', currStepHeight );
+            stepHeight = currStepHeight;
+            $mainStepWrapper && $mainStepWrapper.update();
+        }
+    }
+
+    $(document).on("hover",".base-item",function() {
+        var value = $(this).attr('data-src');
+        if (value) {
+            $(".base-hover img").attr("src", value);
+            $(".base-hover").css("display", "flex");
+        }
+    });
+
+    $(document).on("hover",".range-slider-image",function() {
+        var value = $(this).attr('data-src');
+        if (value) {
+            $(".base-hover img").attr("src", value);
+            $(".base-hover").css("display", "flex");
+        }
+    });
+
+    $(document).on("click",".range-slider-image",function(e) {
+        var value = $(this).attr('data-src');
+        e.preventDefault();
+        if (value) {
+            $(".base-hover img").attr("src", value);
+            $(".base-hover").css("display", "flex");
+        }
+    });
+
+    $(document).on("click",".sidebar-menu .close-btn",function() {
+        jQuery('.sidenav-inner-wrap iframe').each(function(index) {
+            jQuery(this).attr('src', jQuery(this).attr('src'));
+        });
+        $(".sidebar-menu").removeClass('open-menu');
+    });
+
+    $(document).on("click","span.open-btn",function() {
+        $(".sidebar-menu").addClass('open-menu');
+    });
+
+    $(document).on("click",".page-number.mobile-pagination",function() {
+        $('body').addClass('open-pagination');
+    });
+
+    $(document).on("click",".close-progressbar-mobile",function() {
+        $('body').removeClass('open-pagination');
+    });
+
+    //On page load
+    var selectedOptionPrice='';
+    var limit = 5;
+    var duration = 600;
+    $thumbsStepSlide.slideTo( getCurrentStep,duration,false );
+
+    //Prev button click
+    $(document).on("click",".prev-btn",function() {
+        productCustObj.isPrevClicked = 1;
+        productCustObj.selectedOptionAttr = '';
+        productCustObj.currentAttr = '';
+        productCustObj.parentAttr = '';
+        const optionLevel = productCustObj.getStore.optionData.optionLevel;
+        const currentStep = productCustObj.getStore.currentStep;
+        var stepDivClass = `step_${currentStep -1}`;
+        var prevSlide = currentStep-1;
+
+        $(`.product-details-wrp .ajaxOverlay`).show();
+
+        $(this).addClass('disabled');
+        $('body').addClass("mobile");
+
+        if (optionLevel && optionLevel == '1_1') {
+            var duration = 500;
+            $mainStepWrapper.slideTo( prevSlide,duration,false );
+            setTimeout(function(){
+                $(".ajaxOverlay").each(function() {
+                    $(this).hide();
+                });
+            }, 400);
+        } else {
+            nextPrevClickCallback();
+        }
+
+        if (prevSlide == totalStepCount) {
+            $('.base-footer .next-button-wrap button').text('Add To Cart');
+            $('.base-footer .mobile-next-prev-btn .next-btn').addClass('add-cart');
+        } else {
+            $('.base-footer .next-button-wrap button').text('Next');
+            $('.base-footer .mobile-next-prev-btn .next-btn').removeClass('add-cart');
+        }
+        $(this).removeClass('disabled');
+    });
+    //End Prev button click
+
+    //Next button click
+    $(document).on("click",".next-btn",function() {
+
+        //if ul#progressbar li.swiper-slide has half class
+        if ($(this).hasClass('add-cart') && $('ul#progressbar li.swiper-slide.half').length > 0) {
+            var halfLi0 = $('ul#progressbar li.swiper-slide.half')[0];
+            var nextSlide = $(halfLi0).attr('data-stepcount')
+            var duration = 300;
+            $mainStepWrapper.slideTo( nextSlide,duration,false );
+            return false;
+        }
+
+        var flag = 0;
+        var BasePrice = '';
+        var getCurrentAttr = '';
+        var getCurrentParent = '';
+        var selectedOptionAttr = '';
+        var optionLevel = '';
+        var sliderUnit = '';
+
+        var currentStep = productCustObj.getStore.currentStep;
+        var stepDivClass = `step_${productCustObj.getStore.currentStep}`;
+
+        $(`.product-details-wrp .ajaxOverlay`).show();
+
+        $(this).addClass('disabled');
+        $('body').addClass("mobile");
+
+        if ($(`.mainStepSlide .${stepDivClass}`).find(".base-item").length > 0) {
+            $(`.mainStepSlide .${stepDivClass}`).find(".base-item").each(function(){
+                const parentDiv = $(this);
+                if(parentDiv.find('.base-item-inner').hasClass('active'))
+                {
+                    flag = 1;
+                    getCurrentAttr = parentDiv.attr('data-currentattr');
+                    getCurrentParent = parentDiv.attr('data-currentparent');
+                    optionLevel = parentDiv.attr('data-optionLevel');
+                    selectedOptionAttr = $(this).find('.attrOptionTitleValue').val();
+                    productCustObj.optionType = 'single';
+                }
+                if(parentDiv.find('textarea').length > 0)
+                {
+                    const textArea = parentDiv.find('textarea');
+                    if (textArea.hasClass('attrOptionTitleValue') != true) {
+                        flag = 1;
+                        getCurrentAttr = parentDiv.attr('data-currentattr');
+                        getCurrentParent = parentDiv.attr('data-currentparent');
+                        optionLevel = parentDiv.attr('data-optionLevel');
+                        selectedOptionAttr = textArea.val();
+                        if (!selectedOptionAttr) {
+                            selectedOptionAttr = 'Please type in your additional instruction.';
+                        }
+                        productCustObj.optionType = 'single';
+                    }
+                }
+                if(parentDiv.find('#uploader').length > 0)
+                {
+                    flag = 1;
+                    getCurrentAttr = parentDiv.attr('data-currentattr');
+                    getCurrentParent = parentDiv.attr('data-currentparent');
+                    optionLevel = parentDiv.attr('data-optionLevel');
+                    selectedOptionAttr = $(this).find('textarea').val();
+                    if (!selectedOptionAttr) {
+                        selectedOptionAttr = 'Please type in your additional instruction.';
+                    }
+                    productCustObj.optionType = 'multiple';
+                }
+            });
+        }
+
+        if ($(`.mainStepSlide .${stepDivClass}`).find(".base-range-slider-wrap").length > 0) {
+            var getUndefinedRange = [];
+            var sliderSection = [];
+            var dataRangeSliderType = '';
+            $(`.mainStepSlide .${stepDivClass}`).find(".base-range-slider-wrap").each(function(){
+                var getValueOfRange = $(this).find('input[type="range"]').val();
+                var dataSliderType = $(this).find('input[type="range"]').attr('data-slider-type');
+                dataRangeSliderType = $(this).find('input[type="range"]').attr('data-range-slider-type');
+                var getSliderTitle = $(this).find('.range-slider-code h2').text();
+                getCurrentParent = $(this).attr('data-currentparent');
+                getCurrentAttr = $(this).attr('data-currentattr');
+                optionLevel = $(this).attr('data-optionLevel');
+                sliderUnit = $(this).find('input[type="range"]').attr('data-unit');
+
+                if (getValueOfRange == undefined) {
+                    getUndefinedRange.push(
+                        {
+                            'rangeSliderName' : getSliderTitle
+                        }
+                    )
+                } else {
+                    sliderSection.push({
+                        inputType:'range',
+                        sliderType:dataSliderType,
+                        sliderUnit:sliderUnit,
+                        sliderInnerType:dataRangeSliderType,
+                        sliderValue:getValueOfRange
+                    });
+                    productCustObj.optionDataValues = sliderSection;
+                }
+            });
+            selectedOptionAttr = dataRangeSliderType;
+            productCustObj.optionType = 'range';
+            flag = 1;
+        }
+
+        if(flag == 0)
+        {
+            //Move to next step directly
+            var duration = 300;
+            var nextSlide = currentStep + 1;
+            $mainStepWrapper.slideTo( nextSlide,duration,false );
+
+            if (productCustObj.getStore.currentStep == totalStepCount) {
+                $('.base-footer .next-button-wrap button').text('Add To Cart');
+                $('.base-footer .next-button-wrap button').addClass('add-cart');
+                $('.base-footer .mobile-next-prev-btn .next-btn').addClass('add-cart');
+            } else {
+                $('.base-footer .next-button-wrap button').text('Next');
+                $('.base-footer .mobile-next-prev-btn .next-btn').removeClass('add-cart');
+                $('.base-footer .next-button-wrap button').removeClass('add-cart');
+            }
+            $(this).removeClass('disabled');
+        }
+        else
+        {
+            if (currentStep == totalStepCount) {
+                getCurrentAttr = 'm_add_to_cart';
+            }
+            if (selectedOptionAttr && getCurrentParent) {
+                productCustObj.selectedOptionAttr = selectedOptionAttr;
+                productCustObj.currentAttr = getCurrentAttr;
+                productCustObj.parentAttr = getCurrentParent;
+                productCustObj.optionLevel = optionLevel;
+            }
+            productCustObj.isPrevClicked = 0;
+            $(this).rangeslider('destroy');
+            setTimeout(function(){
+                //get next-prev data
+                nextPrevClickCallback();
+            }, 200);
+            scrollToTop(300);
+        }
+    }); //end next button click
+
+    $(document).on("click",".base-item.checkboxWrap",function(event) {
+
+        event.preventDefault();
+        $(".base-hover").css("display", "flex");
+        $(`.product-details-wrp .ajaxOverlay`).show();
+
+        var productDetailsObj = productCustObj.getStore.productDetails;
+        var finalPrice = productDetailsObj.finalPrice;
+        var BasePrice = '';
+        var isMinusPrice = 0;
+
+        $('.base-footer .next-button-wrap button').addClass('disabled');
+        $('.base-footer .pagination .next-button-wrap button').addClass('disabled');
+        $('body').addClass("mobile");
+
+        $(this).parents('.swiper-slide').find(".base-item").each(function(){
+            if($(this).find('.base-item-inner').hasClass('active')){
+                $(this).find('.base-item-inner').removeClass('active');
+                isMinusPrice = $(this).find('.base-item-inner').find('.base-details').attr('data-price') ? $(this).find('.base-item-inner').find('.base-details').attr('data-price') : isMinusPrice;
+            }
+        });
+
+        $(this).find('.base-item-inner').addClass('active');
+
+        const selectedOptionAttr = $(this).find('.attrOptionTitleValue').val();
+        const getCurrentAttr = $(this).attr('data-currentattr');
+        const getCurrentParent = $(this).attr('data-currentparent');
+        const optionLevel = $(this).attr('data-optionLevel');
+
+        if (selectedOptionAttr && getCurrentAttr) {
+            productCustObj.isPrevClicked = 0;
+            productCustObj.selectedOptionAttr = selectedOptionAttr;
+            productCustObj.currentAttr = getCurrentAttr;
+            productCustObj.parentAttr = getCurrentParent;
+            productCustObj.optionLevel = optionLevel;
+            productCustObj.optionType = 'single';
+            selectedOptionPrice = $(this).find('.base-item-inner').find('.base-details').attr('data-price');
+
+            if(selectedOptionPrice && selectedOptionPrice != "")
+            {
+                finalPrice = parseFloat(finalPrice)+parseFloat(selectedOptionPrice)-parseFloat(isMinusPrice);
+                productCustObj.currentOptionPrice = parseFloat(selectedOptionPrice).toFixed(2);
+                $(".totalProdPrice").text(finalPrice.toFixed(2));
+            }
+            else
+            {
+                productCustObj.currentOptionPrice = 0;
+                finalPrice = parseFloat(finalPrice)-parseFloat(isMinusPrice);
+                $(".totalProdPrice").text(finalPrice.toFixed(2));
+            }
+
+            setTimeout(function(){
+                //get next-prev data
+                nextPrevClickCallback();
+                //get current step left sidebar data
+                getLeftSideData();
+            }, 200);
+        }
+        scrollToTop(300);
+        return false;
+    });
+
+    //increase range value function
+    $(document).on("click",".base-range-slider-wrap .range-slider-minus",function() {
+        var $rangeslider = $(this).parents('.range-slider-wrap').find('input[type="range"]');
+        var currValue = $rangeslider.val();
+        var minValue = $rangeslider.attr('min');
+        var step = $rangeslider.attr('step');
+        const newValue = Number(currValue)-Number(step);
+        if (Number(newValue) >= Number(minValue)) {
+            $rangeslider.val(currValue-step).change();
+        }
+    });
+
+    //descrease range value function
+    $(document).on("click",".base-range-slider-wrap .range-slider-plus",function() {
+        var $rangeslider = $(this).parents('.range-slider-wrap').find('input[type="range"]');
+        var currValue = $rangeslider.val();
+        var maxValue = $rangeslider.attr('max');
+        var step = $rangeslider.attr('step');
+        const newValue = Number(currValue)+Number(step);
+        if (Number(newValue) <= Number(maxValue)) {
+            $rangeslider.val(newValue).change();
+        }
+    });
+
+    //click Action to next redirect to back to product
+    $(document).on("click",".action-close, .close-me",function(event) {
+        event.preventDefault();
+        if (previousPage) {
+             if(previousPage.includes('lordhair_quickview')){
+              window.location.href = $('#purl').text();
+             }else{
+                 window.location.href = previousPage;
+             }
+        } else {
+            window.location.href = getSiteUrl;
+        }
+    });
+
+    // detect scroll top or down
+    var doc = document.documentElement;
+    var w   = window;
+
+    var curScroll;
+    var prevScroll = w.scrollY || doc.scrollTop;
+    var curDirection = 0;
+    var prevDirection = 0;
+
+    var header = document.getElementsByTagName('body');
+    var toggled;
+    var threshold = 150;
+
+    var checkScroll = function() {
+        curScroll = w.scrollY || doc.scrollTop;
+        if(curScroll > prevScroll) {
+            curDirection = 2;
+        }
+        else {
+            curDirection = 1;
+        }
+
+        if(curDirection !== prevDirection) {
+            toggled = toggleHeader();
+        }
+
+        prevScroll = curScroll;
+        if(toggled) {
+            prevDirection = curDirection;
+        }
+    };
+
+    var toggleHeader = function() {
+        toggled = true;
+        if(curDirection === 2 && curScroll > threshold) {
+            header[0].classList.remove('mobile');
+        }
+        else if (curDirection === 1) {
+            header[0].classList.add('mobile');
+        }
+        else {
+            toggled = false;
+        }
+        return toggled;
+    };
+
+    window.addEventListener('scroll', checkScroll);
+
+    // Fix tap for button at the bottom in iOS Safari
+    var baseWindowHeight = Math.max(window.innerHeight);
+    var classAdded = false;
+    var documentBody = document.body;
+    var iOSShowBottom = document.querySelector(".iOSShowBottom");
+    document.addEventListener('scroll', function(e){
+        var newWindowHeight = Math.max(window.innerHeight);
+        var isiPhone = /iphone/i.test(navigator.userAgent.toLowerCase());
+        if(isiPhone && newWindowHeight-50 > baseWindowHeight) {
+          if (! documentBody.classList.contains("ios-toolbar-gone")) {
+            documentBody.classList.add("ios-toolbar-gone");
+            iOSShowBottom.style.height = '50px';
+          }
+        } else {
+          if (documentBody.classList.contains("ios-toolbar-gone")) {
+            documentBody.classList.remove("ios-toolbar-gone");
+            iOSShowBottom.style.height = '0px';
+          }
+        }
+    });
+});
+</script>

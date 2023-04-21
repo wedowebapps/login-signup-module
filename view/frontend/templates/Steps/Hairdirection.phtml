@@ -1,0 +1,47 @@
+<?php
+   $productData = $block->getData();
+   $product = $productData['data']['product'];
+   $getPostParams = $productData['data']['getPostParams'];
+   $productId = $product->getID();
+   $getCurrentAttributes = $block->_getCurrentAttributesCall($product,$getPostParams);
+   $getPubCustomizationUrl = $block->getSiteMainUrl().'media/customization/';
+?>
+
+<?php
+    if ($getCurrentAttributes['attributeName'] == 'm_hair_direction') {
+        $block->setOptionLevelToSession('1_1');
+        $block->setDoneOrNotStepToSession('');
+        $block->setSubTitleToSession(__('Which of the following hair directions do you want for your hair system?'));
+        foreach ($getCurrentAttributes['attributValue'] as $attribute) {
+            $activeClass = '';
+            $activeAttrOption = $block->_checkAlreadyInSession($getCurrentAttributes['attributeName']);
+            if ($activeAttrOption && strcmp(trim($activeAttrOption), trim($attribute)) == 0) {
+                $activeClass = 'active current';
+            }
+            $getImagesByAttrName = $block->getImagesByAttrName($attribute);
+            $mainImage = isset($getImagesByAttrName['mainImage']) ?  $getImagesByAttrName['mainImage'] : '';
+            $thumbImage = isset($getImagesByAttrName['thumbImage']) ?  $getImagesByAttrName['thumbImage'] : '';
+            $getPriceRule = $block->getPriceRule($product,$attribute);
+            $getFrmtdPriceRule = $block->getFrmtdPriceRule($getPriceRule);
+            $getPriceRule = $this->helper('Lordhair\Customizations\Helper\Data')->getDataPriceRule($getPriceRule);
+ ?>
+            <div class="base-item checkboxWrap" data-level="1" data-optionLevel="1_1" data-currentattr="m_hair_direction" data-currentparent="m_hair_direction" data-src="<?= $getPubCustomizationUrl.$mainImage ?>">
+                <div class="base-item-inner checkbox <?= $activeClass ?>">
+                    <div class="base-img">
+                        <img alt="<?= __(trim($attribute)) ?>" src="<?= $getPubCustomizationUrl.$thumbImage ?>">
+                    </div>
+                    <div class="base-details" data-price="<?= $getPriceRule ?>">
+                        <p class="attrOptionTitle">
+                            <span><?= __(trim($attribute)) ?></span>
+                            <?php 
+                                if ($getFrmtdPriceRule && $getFrmtdPriceRule != '') {
+                                    echo '<span class="upgradePrice">'.$getFrmtdPriceRule.'</span>';
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <textarea class="attrOptionTitleValue"><?= $attribute ?></textarea>
+                </div>
+            </div>
+     <?php }
+   }
