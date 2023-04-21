@@ -1,0 +1,436 @@
+<div class="modal-img-part comman-part">
+    <img data-bind="attr:{src: getTopImage()}" />
+</div>
+<div class="modal-content-part comman-part">
+    <div data-bind="visible: isLoading" id="ajaxOverlay">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
+    <div class="innert-form-part">
+        <a href="#" class="sm-logo">
+            <img data-bind="attr:{src: getImageUrl('Lordhair-logo.png')}" />
+        </a>
+        <ul class="tabs" data-bind="if: tabListVisible() === true">
+            <li data-tab="tab-1" data-bind="click: changeTab, css: { 'current': selectedTab() == 'tab-1' || init() == 1 }, i18n: 'Login'"></li>
+            <li data-tab="tab-2" data-bind="click: changeTab, css: { 'current': selectedTab() == 'tab-2' }, i18n: 'Register'"></li>
+        </ul>
+        <div class="modal-form-wrap">
+            <div id="tab-1" class="tab-content current" data-bind="if: selectedTab() === 'tab-1' || init() == 1">
+                <div class="login-screen" data-bind="if: loginCurrentScreen() === 'login'">
+                    <h2 data-bind="i18n: 'Welcome back!!'"></h2>
+
+                    <div data-bind="if: otpSent() === true && otpSuccessMessage() != ''" role="alert" class="messages">
+                        <div class="message-success success message">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                    <div data-bind="if: otpSent() === false && otpSuccessMessage() != ''" role="alert" class="messages">
+                        <div class="message-error error message">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" name="loginEmailMobile" id="loginEmailMobile" autofocus data-bind="trimedValue:loginEmailMobile, valueUpdate:'afterkeydown', enterkey: loginStep1" placeholder="Enter Your Email Address" />
+                    </div>
+
+                    <div data-bind="validationMessage: loginEmailMobile" generated="true" class="mage-error"></div>
+                    <div data-bind="validationMessage: loginEmailMobileCheck" generated="true" class="mage-error"></div>
+                    <div data-bind="validationMessage: loginEmailExist" generated="true" class="mage-error"></div>
+
+                    <button type="button" class="mt-5 comman-btn color-red" data-bind="click: loginStep1, disable: isLoading, i18n: 'Continue'"></button>
+                </div>
+                <div class="login-password-screen" data-bind="if: loginCurrentScreen() === 'loginPass'">
+
+                    <div style="display: none;">
+                        <input type="email" id="email" name="username" autocomplete="off" data-bind="value:loginEmailMobile" />
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" autofocus id="password" name="password" autocomplete="password" data-bind="value:loginPassword, valueUpdate:'blur', enterkey: loginWithPass" placeholder="Password">
+                        <img data-bind="attr:{src: getImageUrl('confirm-password-eye.svg'), datasecond: getImageUrl('Eye.svg')}" toggle="#password" class="input-icon toggle-password">
+                    </div>
+
+                    <div data-bind="validationMessage: loginPassword" generated="true" class="mage-error"></div>
+                    <div data-bind="validationMessage: loginInvalid" generated="true" class="mage-error"></div>
+
+                    <div class="loginButtonWrap">
+                        <button type="button" class="mt-5 comman-btn color-red" data-bind="click: loginWithPass, disable: isLoading, i18n: 'Login'"></button>
+                        <button data-bind="visible: isConfirmRequired, click: verifyNowCall, disable: isLoading, i18n: 'Verify Now'" type="button" class="mt-5 comman-btn color-red"></button>
+                    </div>
+
+                    <div data-bind="if: phoneEntered">
+                        <div class="separatetor" data-bind="i18n: 'OR'"></div>
+                        <div class="fb-paypal-wrap">
+                            <button type="button" class="comman-btn color-red" data-bind="click: loginStep2, i18n: 'Request OTP'"></button>
+                        </div>
+                        <p data-bind="i18n: 'You can genrate one time password to access your account.'"></p>
+                    </div>
+                    <div class="forgotButtonWrp">
+                        <a href="#" data-bind="click: forgotButton, i18n: 'Forgot your password?'"></a>
+                    </div>
+                    <hr>
+                    <a href="#" class="back-to-login" data-bind="click: loginButton"><img data-bind="attr:{src: getImageUrl('back-arrow.svg')}" /><span data-bind="i18n: 'Back to login'"></span></a>
+                </div>
+                <div class="login-otp-screen" data-bind="if: loginCurrentScreen() === 'loginOtp'">
+                    <div data-bind="if: otpSent() === true && otpSuccessMessage() != ''" role="alert" class="messages">
+                        <div class="message-success success message">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                    <div data-bind="if: otpSent() === false && otpSuccessMessage() != ''" role="alert" class="messages">
+                        <div class="message-error error message">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                    <h1 data-bind="i18n: 'Enter OTP'"></h1>
+                    <div class="otp-input-group">
+                        <input type="number" name="OtpInput1" id="OtpInput1" data-bind="numeric: true, value:OtpInput1, valueUpdate:'afterkeydown', event: { keyup: otpValueUpdateLogin }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput2" id="OtpInput2" data-bind="numeric: true, value:OtpInput2, valueUpdate:'afterkeydown', event: { keyup: otpValueUpdateLogin }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput3" id="OtpInput3" data-bind="numeric: true, value:OtpInput3, valueUpdate:'afterkeydown', event: { keyup: otpValueUpdateLogin }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput4" id="OtpInput4" data-bind="numeric: true, value:OtpInput4, valueUpdate:'afterkeydown', event: { keyup: otpValueUpdateLogin }" class="mr-1" maxlength="1" autocomplete="off" />
+                    </div>
+                    <p><span data-bind="i18n: 'If you didn’t receive code!'"></span> <b><a href="#" data-bind="click: resendOtp, i18n: 'Resend'"></b></a></p>
+                    <button type="button" class="mt-5 mb-5 comman-btn color-red" data-bind="click: loginWithOtp, disable: isLoading, i18n: 'Login'"></button>
+                    <hr>
+                    <a href="#" class="back-to-login" data-bind="click: loginButton"><img data-bind="attr:{src: getImageUrl('back-arrow.svg')}, i18n: 'Back to login'" /></a>
+                </div>
+                <div class="login-otp-screen register-otp-screen text-center" data-bind="if: loginCurrentScreen() === 'loginEmailOtp'">
+                    <div class="input-group col-md-12" data-bind="if: otpSent">
+                        <div class="message-success success message">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                    <div data-bind="if: otpSent() === false && otpSuccessMessage() != ''" role="alert" class="messages">
+                        <div class="message-error error message">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                    <div class="input-group col-md-12" data-bind="if: showCommonErrors">
+                        <div class="message-success success message">
+                            <div data-bind="html: showCommonErrors"></div>
+                        </div>
+                    </div>
+                    <h1 data-bind="i18n: 'Verify Email Address'"></h1>
+                    <p data-bind="i18n: 'An email with code is sent to your email address To complete the verification, enter the 4-digit activation code'"></p>
+                    <div class="otp-input-group">
+                        <input type="number" name="OtpInput1" id="OtpInput1" data-bind="numeric: true, value:OtpInput1, valueUpdate:'afterkeydown', event: { keyup: emailConfirmVerifyOtpUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput2" id="OtpInput2" data-bind="numeric: true, value:OtpInput2, valueUpdate:'afterkeydown', event: { keyup: emailConfirmVerifyOtpUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput3" id="OtpInput3" data-bind="numeric: true, value:OtpInput3, valueUpdate:'afterkeydown', event: { keyup: emailConfirmVerifyOtpUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput4" id="OtpInput4" data-bind="numeric: true, value:OtpInput4, valueUpdate:'afterkeydown', event: { keyup: emailConfirmVerifyOtpUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                    </div>
+                    <p><span data-bind="i18n: 'If you didn\’t receive code!'"></span> <a href="#" data-bind="click: loginResendOtpEmail, i18n: 'Resend'"></a></p>
+                    <button type="button" class="comman-btn color-red" data-bind="click: loginVerifyEmailButton, i18n: 'Verify'"></button>
+                    <hr>
+                    <a href="#" class="back-to-login" data-bind="click: loginButton"><img data-bind="attr:{src: getImageUrl('back-arrow.svg')}" /><span data-bind="i18n: 'Back to login'"></span></a>
+                </div>
+                <div class="login-success-screen" data-bind="if: loginCurrentScreen() === 'loginSuccess'">
+                    <div data-bind="if: isLoggedIn() === true" role="alert" class="messages">
+                        <div class="message-success success message" style="margin-top: 10px;">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-2" class="tab-content text-left" data-bind="css: { 'current': selectedTab() == 'tab-2' }">
+                <div class="register-screen" data-bind="if: registerCurrentScreen() === 'register'">
+                    <div class="row">
+                        <div class="input-group col-md-6 col-6">
+                            <label><span data-bind="i18n: 'First Name'"></span> <span class="required">*</span></label>
+                            <input type="text" name="regFirstName" autofocus data-bind="value:regFirstName, valueUpdate:'afterkeydown', enterkey: registerStep1" maxlength="255"/>
+                            <div data-bind="validationMessage: regFirstName" generated="true" class="mage-error"></div>
+                        </div>
+                        <div class="input-group col-md-6 col-6">
+                            <label><span data-bind="i18n: 'Last Name'"></span> <span class="required">*</span></label>
+                            <input type="text" name="regLastName" data-bind="value:regLastName, valueUpdate:'afterkeydown', enterkey: registerStep1"  maxlength="255" />
+                            <div data-bind="validationMessage: regLastName" generated="true" class="mage-error"></div>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none;">
+                        <div class="input-group col-md-12">
+                            <label><span data-bind="i18n: 'Mobile No'"></span></label>
+                            <div class="mobile-input-wrap">
+                                <div class="mobile-number-input" data-bind="if: regPhoneOtpShow() === false">
+                                    <div class="iti__flag-container">
+                                        <div class="iti__selected-flag" role="combobox" aria-owns="iti-0__country-listbox" aria-expanded="false" tabindex="0" data-bind="click: openCountryList" aria-activedescendant="iti-0__item-us-preferred">
+                                            <div class="iti__flag" data-bind="css: selectedCountryCode().className"></div>
+                                            <div class="iti__arrow"></div>
+                                        </div>
+                                        <div data-bind="visible: isOpenCountryList">
+                                            <ul class="iti__country-list" data-bind="foreach: countryCodeData">
+                                                <li class="iti__country iti__preferred" data-bind="click: $parent.selectCountryFun, css: { 'current': className == $parent.selectedCountryCode().className }">
+                                                    <div class="iti__flag-box">
+                                                        <div class="iti__flag" data-bind="css: className"></div>
+                                                    </div>
+                                                    <span class="iti__country-name" data-bind="html: name"></span>
+                                                    <span class="iti__dial-code" data-bind="html: dial_code"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <input type="number" autocomplete="regMobileNo" name="regMobileNo" placeholder="" data-bind="value:regMobileNo, valueUpdate:'afterkeydown', event: { keyup: regMobileUpdate }, enterkey: registerStep1, disable: regPhoneVerify() === true" />
+                                    <span data-bind="if: regPhoneVerify() === false">
+                                        <button type="button" class="btn comman-btn color-red" data-bind="click: regVerifyPhoneButton, disable: !regMobileNo()">Verify</button>
+                                    </span>
+                                    <span data-bind="if: regPhoneVerify() === true">
+                                        <a class="verifyIcon" href="#">
+                                            <img data-bind="attr:{src: getImageUrl('check.svg')}" class="refresh" />
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="mobile-verify-otp-input" data-bind="if: regPhoneOtpShow() === true">
+                                    <input type="number" name="OtpInput1" id="OtpInput1" data-bind="numeric: true, value:OtpInput1, valueUpdate:'afterkeydown', event: { keyup: otpRegValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                                    <input type="number" name="OtpInput2" id="OtpInput2" data-bind="numeric: true, value:OtpInput2, valueUpdate:'afterkeydown', event: { keyup: otpRegValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                                    <input type="number" name="OtpInput3" id="OtpInput3" data-bind="numeric: true, value:OtpInput3, valueUpdate:'afterkeydown', event: { keyup: otpRegValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                                    <input type="number" name="OtpInput4" id="OtpInput4" data-bind="numeric: true, value:OtpInput4, valueUpdate:'afterkeydown', event: { keyup: otpRegValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                                    <span data-bind="if: regPhoneVerify() === false">
+                                        <a href="#" data-bind="click: regVerifyPhoneButton"><img data-bind="attr:{src: getImageUrl('refresh.svg')}" class="refresh" /></a>
+                                        <a href="#" data-bind="click: regCloseOtpVerify"><img data-bind="attr:{src: getImageUrl('close.svg')}" class="cross-icon" /></a>
+                                    </span>
+                                </div>
+                                <div data-bind="validationMessage: regMobileNo" generated="true" class="mage-error"></div>
+                                <div data-bind="if: otpSent() === true && otpSuccessMessage() != ''" role="alert" class="messages">
+                                    <div class="message-success success message" style="margin-top: 10px;">
+                                        <div data-bind="html: otpSuccessMessage"></div>
+                                    </div>
+                                </div>
+                                <div data-bind="if: otpSent() === false && otpSuccessMessage() != ''" role="alert" class="messages">
+                                    <div class="message-error error message" style="margin-top: 10px;">
+                                        <div data-bind="html: otpSuccessMessage"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="loginsignup_countrycode" data-bind="value: regCountryCode" class="input-text"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group col-md-12">
+                            <label><span data-bind="i18n: 'Email'"></span><span class="required">*</span></label>
+                            <input type="Email" name="regEmail" autocomplete="regEmail" data-bind="trimedValue:regEmail, valueUpdate:'afterkeydown', enterkey: registerStep1, event: { keyup: regEmailKeyUp }" />
+                            <div data-bind="validationMessage: regEmail" generated="true" class="mage-error"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group col-md-12 pt-2">
+                        <label class="radio-label"><span data-bind="i18n: 'Gender'"></span></label>
+                        <label class="radio-group radio-label"><span data-bind="i18n: 'Male'"></span>
+                            <input type="radio" data-bind = "checked: regGender" name="radio" value="Male">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="radio-group radio-label"><span data-bind="i18n: 'Female'"></span>
+                            <input type="radio" data-bind = "checked: regGender" name="radio" value="Female">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="radio-group radio-label"><span data-bind="i18n: 'Other'"></span>
+                            <input type="radio" data-bind = "checked: regGender" name="radio" value="Other">
+                            <span class="checkmark"></span>
+                        </label>
+                        </div>
+                    </div>
+                    <div class="row mt-2 password-wrap">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <label><span data-bind="i18n: 'Password'"></span> <span class="required">*</span></label>
+                                <input type="password" name="regPasssword" id="regPasssword" data-bind="value:regPasssword, valueUpdate:'afterkeydown', enterkey: registerStep1" />
+                                <img data-bind="attr:{src: getImageUrl('confirm-password-eye.svg'), datasecond: getImageUrl('Eye.svg')}" class="input-icon toggle-password" toggle="#regPasssword" />
+                            </div>
+                            <div data-bind="validationMessage: regPasssword" generated="true" class="mage-error"></div>
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group">
+                                <label><span data-bind="i18n: 'Confirm Password'"></span> <span class="required">*</span></label>
+                                <input type="password" name="regConfPasssword" id="regConfPasssword" data-bind="value:regConfPasssword, valueUpdate:'afterkeydown', enterkey: registerStep1" />
+                                <img data-bind="attr:{src: getImageUrl('confirm-password-eye.svg'), datasecond: getImageUrl('Eye.svg')}"  class="input-icon toggle-password" toggle="#regConfPasssword" />
+                            </div>
+                            <div data-bind="validationMessage: regConfPasssword" generated="true" class="mage-error"></div>
+                        </div>
+                    </div>
+                    <div class="row newsletter-wrap">
+                        <div class="input-group col-md-12">
+                            <label class="radio-group radio-label"><span data-bind="i18n: 'Sign Up for Newsletter'"></span>
+                                <input type="checkbox" checked="checked" name="radio" data-bind = "checked: regSignNewsletter" />
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="input-group col-md-12" data-bind="if: showCommonErrors">
+                            <div data-bind="html: showCommonErrors" generated="true" class="mage-error"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="button" class="comman-btn color-red" data-bind="click: registerStep1, disable: isLoading" ><span data-bind="i18n: 'Register'"></span></button>
+                    </div>
+                </div>
+                <div class="login-otp-screen register-otp-screen text-center" data-bind="if: registerCurrentScreen() === 'registerOtp'">
+                    <div class="input-group col-md-12" data-bind="if: regSuccessMessage">
+                        <div class="message-success success message">
+                            <div data-bind="html: regSuccessMessage"></div>
+                        </div>
+                    </div>
+                    <div data-bind="if: otpSent() === true && otpSuccessMessage() != ''" role="alert" class="messages">
+                        <div class="message-success success message">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                    <div data-bind="if: otpSent() === false && otpSuccessMessage() != ''" role="alert" class="messages">
+                        <div class="message-error error message">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                    <div class="input-group col-md-12" data-bind="if: showCommonErrors">
+                        <div class="message-success success message">
+                            <div data-bind="html: showCommonErrors"></div>
+                        </div>
+                    </div>
+                    <h1><span data-bind="i18n: 'Verify Email Address'"></span></h1>
+                    <p><span data-bind="i18n: 'An email with code is sent to your email address To complete the registration, enter the 4-digit activation code'"></span></p>
+                    <div class="otp-input-group">
+                        <input type="number" name="OtpInput1" id="OtpInput1" data-bind="numeric: true, value:OtpInput1, valueUpdate:'afterkeydown', event: { keyup: otpVerifyValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput2" id="OtpInput2" data-bind="numeric: true, value:OtpInput2, valueUpdate:'afterkeydown', event: { keyup: otpVerifyValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput3" id="OtpInput3" data-bind="numeric: true, value:OtpInput3, valueUpdate:'afterkeydown', event: { keyup: otpVerifyValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                        <input type="number" name="OtpInput4" id="OtpInput4" data-bind="numeric: true, value:OtpInput4, valueUpdate:'afterkeydown', event: { keyup: otpVerifyValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                    </div>
+                    <p><span data-bind="i18n: 'If you didn\’t receive code!'"></span> <b><a href="#" data-bind="click: regResendOtpEmail">Resend</b></a></p>
+                    <button type="button" class="comman-btn color-red" data-bind="click: regVerifyEmailButton"><span data-bind="i18n: 'Verify'"></span></button>
+                    <hr>
+                    <a href="#" class="back-to-login" data-bind="click: loginButton"><img data-bind="attr:{src: getImageUrl('back-arrow.svg')}" /><span data-bind="i18n: 'Back to login'"></span></a>
+                </div>
+                <div class="login-screen forgot-password-section text-center" data-bind="if: registerCurrentScreen() === 'forgotPass'">
+                    <div data-bind="if: forgotScreenStep() === 'forgotEmail'">
+                        <h1 class="text-center"><span data-bind="i18n: 'Forgot Password'"></span></h1>
+                        <div class="input-group">
+                            <input type="text" name="loginEmailMobile" autofocus data-bind="value:loginEmailMobile, valueUpdate:'afterkeydown', enterkey: loginStep1" placeholder="Email or Mobile Number" />
+                        </div>
+                        <div data-bind="validationMessage: loginEmailMobile" generated="true" class="mage-error"></div>
+                        <button type="button" class="mt-5 comman-btn color-red" data-bind="click: forgotEmailClick"><span data-bind="i18n: 'Continue'"></span></button>
+                    </div>
+                    <div class="login-otp-screen" data-bind="if: forgotScreenStep() === 'forgotOtp'">
+                        <div data-bind="if: otpSent() === true && otpSuccessMessage() != ''" role="alert" class="messages">
+                            <div class="message-success success message">
+                                <div data-bind="html: otpSuccessMessage"></div>
+                            </div>
+                        </div>
+                        <div data-bind="if: otpSent() === false && otpSuccessMessage() != ''" role="alert" class="messages">
+                            <div class="message-error error message">
+                                <div data-bind="html: otpSuccessMessage"></div>
+                            </div>
+                        </div>
+                        <h1 data-bind="i18n: 'Enter OTP for Verification'"></h1>
+                        <div class="otp-input-group">
+                            <input type="number" name="OtpInput1" id="OtpInput1" data-bind="numeric: true, value:OtpInput1, valueUpdate:'afterkeydown', event: { keyup: otpValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                            <input type="number" name="OtpInput2" id="OtpInput2" data-bind="numeric: true, value:OtpInput2, valueUpdate:'afterkeydown', event: { keyup: otpValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                            <input type="number" name="OtpInput3" id="OtpInput3" data-bind="numeric: true, value:OtpInput3, valueUpdate:'afterkeydown', event: { keyup: otpValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                            <input type="number" name="OtpInput4" id="OtpInput4" data-bind="numeric: true, value:OtpInput4, valueUpdate:'afterkeydown', event: { keyup: otpValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                        </div>
+                        <p><span data-bind="i18n: 'If you didn’t receive code!'"></span> <b><a href="#" data-bind="click: forgotEmailClick, i18n: 'Resend'"></b></a></p>
+                        <button type="button" class="mt-5 mb-5 comman-btn color-red" data-bind="click: forgotVerifyOtp, disable: isLoading, i18n: 'Continue'"></button>
+                    </div>
+                    <div data-bind="if: forgotScreenStep() === 'forgtPassword'">
+                        <div data-bind="if: otpSent() === true && otpSuccessMessage() != ''" role="alert" class="messages">
+                            <div class="message-success success message">
+                                <div data-bind="html: otpSuccessMessage"></div>
+                            </div>
+                        </div>
+                        <div data-bind="if: otpSent() === false && otpSuccessMessage() != ''" role="alert" class="messages">
+                            <div class="message-error error message">
+                                <div data-bind="html: otpSuccessMessage"></div>
+                            </div>
+                        </div>
+                        <h1 data-bind="i18n: 'Create New Password'"></h1>
+                        <div class="row mt-2 password-wrap">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <label><span data-bind="i18n: 'Password'"></span> <span class="required">*</span></label>
+                                    <input type="password" name="regPasssword" id="regPasssword" data-bind="value:regPasssword, valueUpdate:'afterkeydown', enterkey: registerStep1" />
+                                    <img data-bind="attr:{src: getImageUrl('confirm-password-eye.svg'), datasecond: getImageUrl('Eye.svg')}" class="input-icon toggle-password" toggle="#regPasssword" />
+                                </div>
+                                <div data-bind="validationMessage: regPasssword" generated="true" class="mage-error"></div>
+                            </div>
+                            <div class="input-group col-md-6">
+                                <div class="input-group">
+                                    <label><span data-bind="i18n: 'Confirm Password'"></span> <span class="required">*</span></label>
+                                    <input type="password" name="regConfPasssword" id="regConfPasssword" data-bind="value:regConfPasssword, valueUpdate:'afterkeydown', enterkey: registerStep1" />
+                                    <img data-bind="attr:{src: getImageUrl('confirm-password-eye.svg'), datasecond: getImageUrl('Eye.svg')}" class="input-icon toggle-password" toggle="#regConfPasssword" />
+                                </div>
+                                <div data-bind="validationMessage: regConfPasssword" generated="true" class="mage-error"></div>
+                            </div>
+                        </div>
+                        <div class="row mt-2 password-wrap">
+                            <button type="button" class="mt-5 mb-5 comman-btn color-red" data-bind="click: forgotSubmit, disable: isLoading, i18n: 'Submit'"></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <a href="#" class="back-to-login" data-bind="click: loginButton"><img data-bind="attr:{src: getImageUrl('back-arrow.svg')}" /><span data-bind="i18n: 'Back to login'"></span></a>
+                </div>
+                <div class="login-success-screen" data-bind="if: registerCurrentScreen() === 'loginSuccess'">
+                    <div data-bind="if: isLoggedIn() === true" role="alert" class="messages">
+                        <div class="message-success success message" style="margin-top: 10px;">
+                            <div data-bind="html: otpSuccessMessage"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="register-screen text-center" data-bind="if: registerCurrentScreen() === 'existingUserPhone'">
+                    <h1 class="text-center" data-bind="html: 'Welcome back, '+customerData().fullname"></h1>
+                    <div class="lableOtp"><span data-bind="i18n: 'Please enter your mobile and verify with the one-time-password sent to your mobile.'"></span></div>
+                    <div class="row">
+                        <div class="input-group col-md-12">
+                            <div class="mobile-input-wrap">
+                                <div class="mobile-number-input" data-bind="if: regPhoneOtpShow() === false">
+                                    <div class="iti__flag-container">
+                                        <div class="iti__selected-flag" role="combobox" aria-owns="iti-0__country-listbox" aria-expanded="false" tabindex="0" data-bind="click: openCountryList" aria-activedescendant="iti-0__item-us-preferred">
+                                            <div class="iti__flag" data-bind="css: selectedCountryCode().className"></div>
+                                            <div class="iti__arrow"></div>
+                                        </div>
+                                        <div data-bind="visible: isOpenCountryList">
+                                            <ul class="iti__country-list" data-bind="foreach: countryCodeData">
+                                                <li class="iti__country iti__preferred" data-bind="click: $parent.selectCountryFun, css: { 'current': className == $parent.selectedCountryCode().className }">
+                                                    <div class="iti__flag-box">
+                                                        <div class="iti__flag" data-bind="css: className"></div>
+                                                    </div>
+                                                    <span class="iti__country-name" data-bind="html: name"></span>
+                                                    <span class="iti__dial-code" data-bind="html: dial_code"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <input type="number" autocomplete="regMobileNo" name="regMobileNo" placeholder="" data-bind="value:regMobileNo, valueUpdate:'afterkeydown', event: { keyup: regMobileUpdate }, enterkey: registerStep1, disable: regPhoneVerify() === true" />
+                                    <span data-bind="if: regPhoneVerify() === false">
+                                        <button type="button" class="btn comman-btn color-red" data-bind="click: regVerifyPhoneButton, disable: !regMobileNo()"><span data-bind="i18n: 'Verify'"></span></button>
+                                    </span>
+                                    <span data-bind="if: regPhoneVerify() === true">
+                                        <a class="verifyIcon" href="#">
+                                            <img data-bind="attr:{src: getImageUrl('check.svg')}" class="refresh" />
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="mobile-verify-otp-input" data-bind="if: regPhoneOtpShow() === true">
+                                    <input type="number" name="OtpInput1" id="OtpInput1" data-bind="numeric: true, value:OtpInput1, valueUpdate:'afterkeydown', event: { keyup: otpRegValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                                    <input type="number" name="OtpInput2" id="OtpInput2" data-bind="numeric: true, value:OtpInput2, valueUpdate:'afterkeydown', event: { keyup: otpRegValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                                    <input type="number" name="OtpInput3" id="OtpInput3" data-bind="numeric: true, value:OtpInput3, valueUpdate:'afterkeydown', event: { keyup: otpRegValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                                    <input type="number" name="OtpInput4" id="OtpInput4" data-bind="numeric: true, value:OtpInput4, valueUpdate:'afterkeydown', event: { keyup: otpRegValueUpdate }" class="mr-1" maxlength="1" autocomplete="off" />
+                                    <span data-bind="if: regPhoneVerify() === false">
+                                        <a href="#" data-bind="click: regVerifyPhoneButton"><img data-bind="attr:{src: getImageUrl('refresh.svg')}" class="refresh" /></a>
+                                        <a href="#" data-bind="click: regCloseOtpVerify"><img data-bind="attr:{src: getImageUrl('close.svg')}" class="cross-icon" /></a>
+                                    </span>
+                                </div>
+                                <div data-bind="validationMessage: regMobileNo" generated="true" class="mage-error"></div>
+                                <div data-bind="if: otpSent() === true && otpSuccessMessage() != ''" role="alert" class="messages">
+                                    <div class="message-success success message" style="margin-top: 10px;">
+                                        <div data-bind="html: otpSuccessMessage"></div>
+                                    </div>
+                                </div>
+                                <div data-bind="if: otpSent() === false && otpSuccessMessage() != ''" role="alert" class="messages">
+                                    <div class="message-error error message" style="margin-top: 10px;">
+                                        <div data-bind="html: otpSuccessMessage"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="loginsignup_countrycode" data-bind="value: regCountryCode" class="input-text"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
